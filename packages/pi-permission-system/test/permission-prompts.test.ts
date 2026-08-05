@@ -141,7 +141,7 @@ describe("formatAskPrompt", () => {
     expect(result).toContain("Allow this command?");
   });
 
-  test("puts the matched-rule reason before the command", () => {
+  test("puts the command before the matched-rule reason", () => {
     const result = formatAskPrompt(
       toolResult("bash", { command: "git push", matchedPattern: "git *" }),
       undefined,
@@ -149,7 +149,7 @@ describe("formatAskPrompt", () => {
       makeFormatter(),
     );
     expect(result).toBe(
-      "Why this needs approval:\nBash rule 'git *' requires confirmation for this part of the command.\n\nCommand requiring approval:\ngit push\n\nAllow this command?",
+      "Command requiring approval:\ngit push\n\nWhy this needs approval:\nBash rule 'git *' requires confirmation for this part of the command.\n\nAllow this command?",
     );
   });
 
@@ -164,7 +164,7 @@ describe("formatAskPrompt", () => {
       makeFormatter(),
     );
     expect(result).toBe(
-      "Why this needs approval:\nThis part uses a command wrapper that can run another command indirectly.\n\nCommand requiring approval:\nxargs -0 grep -l permission\n\nAllow this command?",
+      "Command requiring approval:\nxargs -0 grep -l permission\n\nWhy this needs approval:\nThis part uses a command wrapper that can run another command indirectly.\n\nAllow this command?",
     );
   });
 
@@ -179,7 +179,7 @@ describe("formatAskPrompt", () => {
       makeFormatter(),
     );
     expect(result).toBe(
-      `Why this needs approval:\nThis part contains a shell payload the permission system cannot inspect separately.\n\nCommand requiring approval:\nbash -c "git status"\n\nAllow this command?`,
+      `Command requiring approval:\nbash -c "git status"\n\nWhy this needs approval:\nThis part contains a shell payload the permission system cannot inspect separately.\n\nAllow this command?`,
     );
   });
 
@@ -194,7 +194,7 @@ describe("formatAskPrompt", () => {
       makeFormatter(),
     );
     expect(result).toBe(
-      "Why this needs approval:\nThe permission system could not reliably parse this into checkable command parts.\n\nCommand requiring approval:\nbroken $(\n\nAllow this command?",
+      "Command requiring approval:\nbroken $(\n\nWhy this needs approval:\nThe permission system could not reliably parse this into checkable command parts.\n\nAllow this command?",
     );
   });
 
@@ -206,7 +206,7 @@ describe("formatAskPrompt", () => {
       makeFormatter(),
     );
     expect(result).toBe(
-      `Why this needs approval:\nThe active bash policy requires confirmation for this part of the command.\n\nCommand requiring approval:\nrm -rf .\n\nFull command:\necho "hello" && rm -rf .\n\nAllow this command?`,
+      `Command requiring approval:\nrm -rf .\n\nWhy this needs approval:\nThe active bash policy requires confirmation for this part of the command.\n\nFull command:\necho "hello" && rm -rf .\n\nAllow this command?`,
     );
   });
 
@@ -219,7 +219,7 @@ describe("formatAskPrompt", () => {
     );
     expect(result).not.toContain("full command:");
     expect(result).toBe(
-      "Why this needs approval:\nThe active bash policy requires confirmation for this part of the command.\n\nCommand requiring approval:\ngit push\n\nAllow this command?",
+      "Command requiring approval:\ngit push\n\nWhy this needs approval:\nThe active bash policy requires confirmation for this part of the command.\n\nAllow this command?",
     );
   });
 
@@ -261,7 +261,7 @@ describe("formatAskPrompt", () => {
       makeFormatter(),
     );
     expect(result).toBe(
-      "Why this needs approval:\nBash rule 'rm *' requires confirmation for this part of the command.\n\nCommand requiring approval:\nrm -rf foo\n\nFull command:\ncd /tmp && rm -rf foo\n\nAllow this command?",
+      "Command requiring approval:\nrm -rf foo\n\nWhy this needs approval:\nBash rule 'rm *' requires confirmation for this part of the command.\n\nFull command:\ncd /tmp && rm -rf foo\n\nAllow this command?",
     );
   });
 
@@ -277,7 +277,7 @@ describe("formatAskPrompt", () => {
       makeFormatter(),
     );
     expect(result).toBe(
-      "Why this needs approval:\nBash rule 'rm *' requires confirmation for this part of the command.\n\nCommand requiring approval (inside command substitution):\nrm -rf foo\n\nAllow this command?",
+      "Command requiring approval (inside command substitution):\nrm -rf foo\n\nWhy this needs approval:\nBash rule 'rm *' requires confirmation for this part of the command.\n\nAllow this command?",
     );
   });
 

@@ -43,8 +43,8 @@ export function formatAskPrompt(
     const commandContext = matchQualifier(undefined, result.commandContext);
     const fullCommand = getNonEmptyString(toRecord(input).command);
     const sections = [
-      formatBashAskReason(result),
       `Command requiring approval${commandContext ? ` ${commandContext}` : ""}:\n${subCommand}`,
+      formatBashAskReason(result),
     ];
     if (fullCommand && fullCommand !== subCommand) {
       sections.push(`Full command:\n${fullCommand}`);

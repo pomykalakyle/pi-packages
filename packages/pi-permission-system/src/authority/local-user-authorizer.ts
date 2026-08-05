@@ -99,11 +99,14 @@ function insertCommandReview(
   message: string,
   review: BashCommandReview,
 ): string {
-  const commandSection = "\n\nCommand requiring approval";
-  const insertionPoint = message.indexOf(commandSection);
-  if (insertionPoint < 0) {
+  const trailingSectionStarts = [
+    message.indexOf("\n\nRequested by:"),
+    message.indexOf("\n\nAllow this command?"),
+  ].filter((index) => index >= 0);
+  if (trailingSectionStarts.length === 0) {
     return message;
   }
+  const insertionPoint = Math.min(...trailingSectionStarts);
   const reviewSections = [
     `What it does:\n${review.explanation}`,
     `Security review:\n${formatSecurityAssessment(review)} — ${review.securitySummary}`,

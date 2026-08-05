@@ -126,7 +126,7 @@ describe("LocalUserAuthorizer", () => {
   });
 
   describe("bash command review", () => {
-    it("adds the explanation and security review before the command", async () => {
+    it("adds the explanation and security review after the full command", async () => {
       const commandReviewer: BashCommandReviewer = {
         review: vi.fn(async () => ({
           explanation: "Reads input and prints each item.",
@@ -137,11 +137,11 @@ describe("LocalUserAuthorizer", () => {
       const { deps, events, decisionFn } = makeDeps({ commandReviewer });
       const authorizer = new LocalUserAuthorizer(deps);
       const message = [
-        "Why this needs approval:",
-        "This part uses a command wrapper.",
-        "",
         "Command requiring approval:",
         "xargs echo",
+        "",
+        "Why this needs approval:",
+        "This part uses a command wrapper.",
         "",
         "Full command:",
         `printf 'test' | xargs echo`,
@@ -168,20 +168,20 @@ describe("LocalUserAuthorizer", () => {
         fullCommand: `printf 'test' | xargs echo`,
       });
       const reviewedMessage = [
+        "Command requiring approval:",
+        "xargs echo",
+        "",
         "Why this needs approval:",
         "This part uses a command wrapper.",
+        "",
+        "Full command:",
+        `printf 'test' | xargs echo`,
         "",
         "What it does:",
         "Reads input and prints each item.",
         "",
         "Security review:",
         "No obvious concerns — No concrete security concerns are visible.",
-        "",
-        "Command requiring approval:",
-        "xargs echo",
-        "",
-        "Full command:",
-        `printf 'test' | xargs echo`,
         "",
         "Allow this command?",
       ].join("\n");
