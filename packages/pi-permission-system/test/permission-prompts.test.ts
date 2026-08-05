@@ -149,6 +149,54 @@ describe("formatAskPrompt", () => {
       makeFormatter(),
     );
     expect(result).toContain("matched 'git *'");
+    expect(result).toContain(
+      "Reason: 'git push' is the part requiring approval because it matched bash rule 'git *', which requires confirmation.",
+    );
+  });
+
+  test("explains an indirection-wrapper safety prompt", () => {
+    const result = formatAskPrompt(
+      toolResult("bash", {
+        command: "xargs -0 grep -l permission",
+        matchedPattern: "<indirection-bash-wrapper>",
+      }),
+      undefined,
+      undefined,
+      makeFormatter(),
+    );
+    expect(result).toContain(
+      "Reason: 'xargs -0 grep -l permission' is the part requiring approval because it uses a command wrapper that can run another command indirectly.",
+    );
+  });
+
+  test("explains an opaque-wrapper safety prompt", () => {
+    const result = formatAskPrompt(
+      toolResult("bash", {
+        command: 'bash -c "git status"',
+        matchedPattern: "<opaque-bash-wrapper>",
+      }),
+      undefined,
+      undefined,
+      makeFormatter(),
+    );
+    expect(result).toContain(
+      `Reason: 'bash -c "git status"' is the part requiring approval because it contains a shell payload the permission system cannot inspect separately.`,
+    );
+  });
+
+  test("explains an unparseable-command safety prompt", () => {
+    const result = formatAskPrompt(
+      toolResult("bash", {
+        command: "broken $(",
+        matchedPattern: "<unparseable-bash-command>",
+      }),
+      undefined,
+      undefined,
+      makeFormatter(),
+    );
+    expect(result).toContain(
+      "Reason: 'broken $(' is the part requiring approval because the permission system could not reliably parse it into checkable command parts.",
+    );
   });
 
   test("appends full command when input contains a chain that differs from the sub-command", () => {
@@ -159,7 +207,7 @@ describe("formatAskPrompt", () => {
       makeFormatter(),
     );
     expect(result).toBe(
-      `Current agent requested bash command 'rm -rf .' (full command: 'echo "hello" && rm -rf .'). Allow this command?`,
+      `Current agent requested bash command 'rm -rf .' (full command: 'echo "hello" && rm -rf .').\nReason: 'rm -rf .' is the part requiring approval because the active bash policy requires confirmation.\nAllow this command?`,
     );
   });
 
@@ -172,7 +220,7 @@ describe("formatAskPrompt", () => {
     );
     expect(result).not.toContain("full command:");
     expect(result).toBe(
-      "Current agent requested bash command 'git push'. Allow this command?",
+      "Current agent requested bash command 'git push'.\nReason: 'git push' is the part requiring approval because the active bash policy requires confirmation.\nAllow this command?",
     );
   });
 
@@ -214,7 +262,7 @@ describe("formatAskPrompt", () => {
       makeFormatter(),
     );
     expect(result).toBe(
-      "Current agent requested bash command 'rm -rf foo' (matched 'rm *') (full command: 'cd /tmp && rm -rf foo'). Allow this command?",
+      "Current agent requested bash command 'rm -rf foo' (matched 'rm *') (full command: 'cd /tmp && rm -rf foo').\nReason: 'rm -rf foo' is the part requiring approval because it matched bash rule 'rm *', which requires confirmation.\nAllow this command?",
     );
   });
 

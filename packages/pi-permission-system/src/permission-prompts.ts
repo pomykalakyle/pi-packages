@@ -50,7 +50,8 @@ export function formatAskPrompt(
       fullCommand && fullCommand !== subCommand
         ? ` (full command: '${fullCommand}')`
         : "";
-    return `${subject} requested bash command '${subCommand}'${qualifierInfo}${fullCommandInfo}. Allow this command?`;
+    const reason = formatBashAskReason(result, subCommand);
+    return `${subject} requested bash command '${subCommand}'${qualifierInfo}${fullCommandInfo}.\n${reason}\nAllow this command?`;
   }
 
   if (isMcpCheck(result) && result.target) {
@@ -72,6 +73,25 @@ export function formatAskPrompt(
     : "";
   const inputSuffix = inputPreview ? ` ${inputPreview}` : "";
   return `${subject} requested tool '${result.toolName}'${patternInfo}${inputSuffix}. Allow this call?`;
+}
+
+function formatBashAskReason(
+  result: PermissionCheckResult,
+  command: string,
+): string {
+  const prefix = `Reason: '${command}' is the part requiring approval because`;
+  switch (result.matchedPattern) {
+    case "<indirection-bash-wrapper>":
+      return `${prefix} it uses a command wrapper that can run another command indirectly.`;
+    case "<opaque-bash-wrapper>":
+      return `${prefix} it contains a shell payload the permission system cannot inspect separately.`;
+    case "<unparseable-bash-command>":
+      return `${prefix} the permission system could not reliably parse it into checkable command parts.`;
+    case undefined:
+      return `${prefix} the active bash policy requires confirmation.`;
+    default:
+      return `${prefix} it matched bash rule '${result.matchedPattern}', which requires confirmation.`;
+  }
 }
 
 export function formatSkillAskPrompt(
