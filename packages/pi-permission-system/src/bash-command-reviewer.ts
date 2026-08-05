@@ -90,7 +90,7 @@ export type CompleteFn = (
     env?: Record<string, string>;
     reasoningEffort: "low";
     serviceTier: "priority";
-    toolChoice: "any";
+    toolChoice: "required";
   },
 ) => Promise<AssistantMessage>;
 
@@ -161,7 +161,7 @@ async function reviewCommand(
         env: auth.env,
         reasoningEffort: "low",
         serviceTier: REVIEW_SERVICE_TIER,
-        toolChoice: "any",
+        toolChoice: "required",
       },
     );
     const review = readReview(reply);

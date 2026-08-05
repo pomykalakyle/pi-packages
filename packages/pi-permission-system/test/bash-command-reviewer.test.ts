@@ -138,7 +138,7 @@ describe("createBashCommandReviewer", () => {
       reasoningEffort: "low",
       serviceTier: "priority",
       signal: expect.any(AbortSignal),
-      toolChoice: "any",
+      toolChoice: "required",
     });
   });
 
