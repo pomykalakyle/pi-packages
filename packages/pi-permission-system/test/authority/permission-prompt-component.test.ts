@@ -1,15 +1,14 @@
 import { visibleWidth } from "@earendil-works/pi-tui";
 import { describe, expect, it, vi } from "vitest";
 
-const { highlightCodeMock } = vi.hoisted(() => ({
-  highlightCodeMock: vi.fn((code: string): string[] =>
-    code.split("\n").map((line) => `\u001b[35m${line}\u001b[39m`),
+const { highlightBashCommandMock } = vi.hoisted(() => ({
+  highlightBashCommandMock: vi.fn(
+    (command: string): string => `\u001b[35m${command}\u001b[39m`,
   ),
 }));
 
-vi.mock("@earendil-works/pi-coding-agent", async (importOriginal) => ({
-  ...(await importOriginal<typeof import("@earendil-works/pi-coding-agent")>()),
-  highlightCode: highlightCodeMock,
+vi.mock("#src/bash-syntax-highlighter", () => ({
+  highlightBashCommand: highlightBashCommandMock,
 }));
 
 import type {
@@ -149,7 +148,7 @@ describe("presentInlinePermissionPrompt", () => {
   });
 
   it("syntax-highlights the selected and full bash commands", () => {
-    highlightCodeMock.mockClear();
+    highlightBashCommandMock.mockClear();
     const { view, captured } = makeFakeView(true);
     const message = [
       "Command requiring approval:",
@@ -159,7 +158,8 @@ describe("presentInlinePermissionPrompt", () => {
       "This part uses a command wrapper.",
       "",
       "Full command:",
-      `printf 'test' | xargs echo`,
+      `printf 'test' |`,
+      "  xargs echo",
       "",
       "What it does:",
       "Prints each input item.",
@@ -173,15 +173,20 @@ describe("presentInlinePermissionPrompt", () => {
 
     const text = captured.component?.render(120).join("\n") ?? "";
 
-    expect(highlightCodeMock).toHaveBeenNthCalledWith(1, "xargs echo", "bash");
-    expect(highlightCodeMock).toHaveBeenNthCalledWith(
-      2,
-      `printf 'test' | xargs echo`,
-      "bash",
+    expect(highlightBashCommandMock).toHaveBeenNthCalledWith(
+      1,
+      "xargs echo",
+      expect.anything(),
     );
-    expect(highlightCodeMock).toHaveBeenCalledTimes(2);
+    expect(highlightBashCommandMock).toHaveBeenNthCalledWith(
+      2,
+      `printf 'test' |\n  xargs echo`,
+      expect.anything(),
+    );
+    expect(highlightBashCommandMock).toHaveBeenCalledTimes(2);
     expect(text).toContain("\u001b[35mxargs echo\u001b[39m");
-    expect(text).toContain(`\u001b[35mprintf 'test' | xargs echo\u001b[39m`);
+    expect(text).toContain(`\u001b[35mprintf 'test' |`);
+    expect(text).toContain("\u001b[35m  xargs echo");
   });
 
   describe("double-press to confirm (enabled)", () => {

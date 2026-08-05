@@ -1,8 +1,7 @@
-import {
-  type ExtensionContext,
-  type ExtensionUIContext,
-  highlightCode,
-  type KeybindingsManager,
+import type {
+  ExtensionContext,
+  ExtensionUIContext,
+  KeybindingsManager,
 } from "@earendil-works/pi-coding-agent";
 import {
   type Component,
@@ -23,6 +22,7 @@ import {
   type PromptViewState,
   reducePrompt,
 } from "#src/authority/permission-prompt-decision";
+import { highlightBashCommand } from "#src/bash-syntax-highlighter";
 
 /**
  * Inline `ctx.ui.custom` permission dialog for TUI sessions.
@@ -251,7 +251,7 @@ class PermissionPromptComponent implements Component {
   private renderDecision(): string[] {
     const lines = [
       this.theme.fg("accent", this.title),
-      highlightBashCommandSections(this.message),
+      highlightBashCommandSections(this.message, this.theme),
       "",
     ];
     for (const key of OPTION_ORDER) {
@@ -275,7 +275,7 @@ class PermissionPromptComponent implements Component {
   private renderReason(): string[] {
     const lines = [
       this.theme.fg("accent", this.title),
-      highlightBashCommandSections(this.message),
+      highlightBashCommandSections(this.message, this.theme),
       "",
       `Reason (required): ${this.reasonBuffer}\u2588`,
     ];
@@ -319,32 +319,30 @@ class PermissionPromptComponent implements Component {
  * than clipped so no content is lost; the final `truncateToWidth` guards the
  * edge cases `wrapTextWithAnsi` cannot split (a lone wide grapheme).
  */
-function highlightBashCommandSections(message: string): string {
-  let inCommandSection = false;
-  return message
-    .split("\n")
-    .map((line) => {
-      if (
-        (line.startsWith("Command requiring approval") && line.endsWith(":")) ||
-        line === "Full command:"
-      ) {
-        inCommandSection = true;
-        return line;
-      }
-      if (line.length === 0) {
-        inCommandSection = false;
-        return line;
-      }
-      if (line === "Requested by:" || line === "Allow this command?") {
-        inCommandSection = false;
-        return line;
-      }
-      if (!inCommandSection) {
-        return line;
-      }
-      return highlightCode(line, "bash")[0] ?? line;
-    })
-    .join("\n");
+function highlightBashCommandSections(
+  message: string,
+  theme: PromptTheme,
+): string {
+  const lines = message.split("\n");
+  const highlighted: string[] = [];
+  for (let index = 0; index < lines.length; index += 1) {
+    const line = lines[index] ?? "";
+    const isCommandHeading =
+      (line.startsWith("Command requiring approval") && line.endsWith(":")) ||
+      line === "Full command:";
+    highlighted.push(line);
+    if (!isCommandHeading) continue;
+
+    const commandLines: string[] = [];
+    while (index + 1 < lines.length && lines[index + 1]?.length !== 0) {
+      index += 1;
+      commandLines.push(lines[index] ?? "");
+    }
+    if (commandLines.length > 0) {
+      highlighted.push(highlightBashCommand(commandLines.join("\n"), theme));
+    }
+  }
+  return highlighted.join("\n");
 }
 
 function fitToWidth(lines: string[], width: number): string[] {
