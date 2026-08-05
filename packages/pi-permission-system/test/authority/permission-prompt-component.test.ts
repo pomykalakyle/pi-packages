@@ -1,5 +1,17 @@
 import { visibleWidth } from "@earendil-works/pi-tui";
 import { describe, expect, it, vi } from "vitest";
+
+const { highlightCodeMock } = vi.hoisted(() => ({
+  highlightCodeMock: vi.fn((code: string): string[] =>
+    code.split("\n").map((line) => `\u001b[35m${line}\u001b[39m`),
+  ),
+}));
+
+vi.mock("@earendil-works/pi-coding-agent", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@earendil-works/pi-coding-agent")>()),
+  highlightCode: highlightCodeMock,
+}));
+
 import type {
   PermissionPromptDecision,
   RequestPermissionOptions,
@@ -134,6 +146,35 @@ describe("presentInlinePermissionPrompt", () => {
     for (const line of lines) {
       expect(visibleWidth(line)).toBeLessThanOrEqual(width);
     }
+  });
+
+  it("syntax-highlights the selected and full bash commands", () => {
+    highlightCodeMock.mockClear();
+    const { view, captured } = makeFakeView(true);
+    const message = [
+      "Reason: This part uses a command wrapper.",
+      "",
+      "Command requiring approval:",
+      "xargs echo",
+      "",
+      "Full command:",
+      `printf 'test' | xargs echo`,
+      "",
+      "Allow this command?",
+    ].join("\n");
+    void presentInlinePermissionPrompt(view, "Permission Required", message);
+
+    const text = captured.component?.render(120).join("\n") ?? "";
+
+    expect(highlightCodeMock).toHaveBeenNthCalledWith(1, "xargs echo", "bash");
+    expect(highlightCodeMock).toHaveBeenNthCalledWith(
+      2,
+      `printf 'test' | xargs echo`,
+      "bash",
+    );
+    expect(highlightCodeMock).toHaveBeenCalledTimes(2);
+    expect(text).toContain("\u001b[35mxargs echo\u001b[39m");
+    expect(text).toContain(`\u001b[35mprintf 'test' | xargs echo\u001b[39m`);
   });
 
   describe("double-press to confirm (enabled)", () => {

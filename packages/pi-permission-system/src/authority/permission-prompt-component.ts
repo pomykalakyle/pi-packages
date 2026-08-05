@@ -1,7 +1,8 @@
-import type {
-  ExtensionContext,
-  ExtensionUIContext,
-  KeybindingsManager,
+import {
+  type ExtensionContext,
+  type ExtensionUIContext,
+  highlightCode,
+  type KeybindingsManager,
 } from "@earendil-works/pi-coding-agent";
 import {
   type Component,
@@ -248,7 +249,11 @@ class PermissionPromptComponent implements Component {
   }
 
   private renderDecision(): string[] {
-    const lines = [this.theme.fg("accent", this.title), this.message, ""];
+    const lines = [
+      this.theme.fg("accent", this.title),
+      highlightBashCommandSections(this.message),
+      "",
+    ];
     for (const key of OPTION_ORDER) {
       const label = key === "s" ? this.config.sessionLabel : OPTION_LABELS[key];
       const selected = this.state.highlightedKey === key;
@@ -270,7 +275,7 @@ class PermissionPromptComponent implements Component {
   private renderReason(): string[] {
     const lines = [
       this.theme.fg("accent", this.title),
-      this.message,
+      highlightBashCommandSections(this.message),
       "",
       `Reason (required): ${this.reasonBuffer}\u2588`,
     ];
@@ -314,6 +319,30 @@ class PermissionPromptComponent implements Component {
  * than clipped so no content is lost; the final `truncateToWidth` guards the
  * edge cases `wrapTextWithAnsi` cannot split (a lone wide grapheme).
  */
+function highlightBashCommandSections(message: string): string {
+  let inCommandSection = false;
+  return message
+    .split("\n")
+    .map((line) => {
+      if (
+        (line.startsWith("Command requiring approval") && line.endsWith(":")) ||
+        line === "Full command:"
+      ) {
+        inCommandSection = true;
+        return line;
+      }
+      if (line === "Requested by:" || line === "Allow this command?") {
+        inCommandSection = false;
+        return line;
+      }
+      if (!inCommandSection || line.length === 0) {
+        return line;
+      }
+      return highlightCode(line, "bash")[0] ?? line;
+    })
+    .join("\n");
+}
+
 function fitToWidth(lines: string[], width: number): string[] {
   if (width <= 0) {
     return [];
