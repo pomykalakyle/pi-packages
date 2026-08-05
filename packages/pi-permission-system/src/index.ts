@@ -116,6 +116,12 @@ export default function piPermissionSystemExtension(pi: ExtensionAPI): void {
         registry: ctx.modelRegistry,
         complete,
         cwd: ctx.cwd,
+        onOutcome: (outcome) =>
+          logger.review("bash_command_review", {
+            provider: "openai-codex",
+            model: "gpt-5.6-luna",
+            ...outcome,
+          }),
       }),
     forwardingDir: paths.forwardingDir,
     registry: subagentRegistry,

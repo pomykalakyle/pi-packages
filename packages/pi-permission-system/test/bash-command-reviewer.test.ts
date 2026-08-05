@@ -73,6 +73,8 @@ describe("createBashCommandReviewer", () => {
 
   it("reviews the selected and full commands with Luna", async () => {
     const deps = makeDependencies();
+    const onOutcome = vi.fn();
+    deps.onOutcome = onOutcome;
     const reviewer = createBashCommandReviewer(deps);
 
     const review = await reviewer.review({
@@ -84,6 +86,10 @@ describe("createBashCommandReviewer", () => {
       explanation: "Prints each input item.",
       securityAssessment: "no-obvious-concerns",
       securitySummary: "No concrete security concerns are visible.",
+    });
+    expect(onOutcome).toHaveBeenCalledWith({
+      status: "completed",
+      latencyMs: expect.any(Number),
     });
     expect(deps.registry.find).toHaveBeenCalledWith(
       "openai-codex",
@@ -167,6 +173,8 @@ describe("createBashCommandReviewer", () => {
     vi.useFakeTimers();
     const deps = makeDependencies();
     deps.timeoutMs = 1000;
+    const onOutcome = vi.fn();
+    deps.onOutcome = onOutcome;
     deps.complete.mockImplementation(
       (_model: unknown, _context: unknown, options: { signal?: AbortSignal }) =>
         new Promise<AssistantMessage>((_resolve, reject) => {
@@ -181,5 +189,9 @@ describe("createBashCommandReviewer", () => {
     await vi.advanceTimersByTimeAsync(1000);
 
     await expect(result).resolves.toBeNull();
+    expect(onOutcome).toHaveBeenCalledWith({
+      status: "timeout",
+      latencyMs: 1000,
+    });
   });
 });
