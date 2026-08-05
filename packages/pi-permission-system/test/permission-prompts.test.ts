@@ -141,16 +141,15 @@ describe("formatAskPrompt", () => {
     expect(result).toContain("Allow this command?");
   });
 
-  test("formats bash prompt with matched pattern", () => {
+  test("puts the matched-rule reason before the command", () => {
     const result = formatAskPrompt(
       toolResult("bash", { command: "git push", matchedPattern: "git *" }),
       undefined,
       undefined,
       makeFormatter(),
     );
-    expect(result).toContain("matched 'git *'");
-    expect(result).toContain(
-      "Reason: 'git push' is the part requiring approval because it matched bash rule 'git *', which requires confirmation.",
+    expect(result).toBe(
+      "Reason: Bash rule 'git *' requires confirmation for this part of the command.\n\nCommand requiring approval:\ngit push\n\nAllow this command?",
     );
   });
 
@@ -164,8 +163,8 @@ describe("formatAskPrompt", () => {
       undefined,
       makeFormatter(),
     );
-    expect(result).toContain(
-      "Reason: 'xargs -0 grep -l permission' is the part requiring approval because it uses a command wrapper that can run another command indirectly.",
+    expect(result).toBe(
+      "Reason: This part uses a command wrapper that can run another command indirectly.\n\nCommand requiring approval:\nxargs -0 grep -l permission\n\nAllow this command?",
     );
   });
 
@@ -179,8 +178,8 @@ describe("formatAskPrompt", () => {
       undefined,
       makeFormatter(),
     );
-    expect(result).toContain(
-      `Reason: 'bash -c "git status"' is the part requiring approval because it contains a shell payload the permission system cannot inspect separately.`,
+    expect(result).toBe(
+      `Reason: This part contains a shell payload the permission system cannot inspect separately.\n\nCommand requiring approval:\nbash -c "git status"\n\nAllow this command?`,
     );
   });
 
@@ -194,8 +193,8 @@ describe("formatAskPrompt", () => {
       undefined,
       makeFormatter(),
     );
-    expect(result).toContain(
-      "Reason: 'broken $(' is the part requiring approval because the permission system could not reliably parse it into checkable command parts.",
+    expect(result).toBe(
+      "Reason: The permission system could not reliably parse this into checkable command parts.\n\nCommand requiring approval:\nbroken $(\n\nAllow this command?",
     );
   });
 
@@ -207,7 +206,7 @@ describe("formatAskPrompt", () => {
       makeFormatter(),
     );
     expect(result).toBe(
-      `Current agent requested bash command 'rm -rf .' (full command: 'echo "hello" && rm -rf .').\nReason: 'rm -rf .' is the part requiring approval because the active bash policy requires confirmation.\nAllow this command?`,
+      `Reason: The active bash policy requires confirmation for this part of the command.\n\nCommand requiring approval:\nrm -rf .\n\nFull command:\necho "hello" && rm -rf .\n\nAllow this command?`,
     );
   });
 
@@ -220,7 +219,7 @@ describe("formatAskPrompt", () => {
     );
     expect(result).not.toContain("full command:");
     expect(result).toBe(
-      "Current agent requested bash command 'git push'.\nReason: 'git push' is the part requiring approval because the active bash policy requires confirmation.\nAllow this command?",
+      "Reason: The active bash policy requires confirmation for this part of the command.\n\nCommand requiring approval:\ngit push\n\nAllow this command?",
     );
   });
 
@@ -254,7 +253,7 @@ describe("formatAskPrompt", () => {
     expect(result).not.toContain("full command:");
   });
 
-  test("places full-command suffix after the qualifier and before the terminal sentence", () => {
+  test("places the full command after the command requiring approval", () => {
     const result = formatAskPrompt(
       toolResult("bash", { command: "rm -rf foo", matchedPattern: "rm *" }),
       undefined,
@@ -262,7 +261,7 @@ describe("formatAskPrompt", () => {
       makeFormatter(),
     );
     expect(result).toBe(
-      "Current agent requested bash command 'rm -rf foo' (matched 'rm *') (full command: 'cd /tmp && rm -rf foo').\nReason: 'rm -rf foo' is the part requiring approval because it matched bash rule 'rm *', which requires confirmation.\nAllow this command?",
+      "Reason: Bash rule 'rm *' requires confirmation for this part of the command.\n\nCommand requiring approval:\nrm -rf foo\n\nFull command:\ncd /tmp && rm -rf foo\n\nAllow this command?",
     );
   });
 
@@ -277,8 +276,8 @@ describe("formatAskPrompt", () => {
       undefined,
       makeFormatter(),
     );
-    expect(result).toContain(
-      "bash command 'rm -rf foo' (matched 'rm *', inside command substitution).",
+    expect(result).toBe(
+      "Reason: Bash rule 'rm *' requires confirmation for this part of the command.\n\nCommand requiring approval (inside command substitution):\nrm -rf foo\n\nAllow this command?",
     );
   });
 

@@ -40,18 +40,20 @@ export function formatAskPrompt(
 
   if (classifyToolKind(result.toolName) === "bash") {
     const subCommand = result.command ?? "";
-    const qualifier = matchQualifier(
-      result.matchedPattern,
-      result.commandContext,
-    );
-    const qualifierInfo = qualifier ? ` ${qualifier}` : "";
+    const commandContext = matchQualifier(undefined, result.commandContext);
     const fullCommand = getNonEmptyString(toRecord(input).command);
-    const fullCommandInfo =
-      fullCommand && fullCommand !== subCommand
-        ? ` (full command: '${fullCommand}')`
-        : "";
-    const reason = formatBashAskReason(result, subCommand);
-    return `${subject} requested bash command '${subCommand}'${qualifierInfo}${fullCommandInfo}.\n${reason}\nAllow this command?`;
+    const sections = [
+      formatBashAskReason(result),
+      `Command requiring approval${commandContext ? ` ${commandContext}` : ""}:\n${subCommand}`,
+    ];
+    if (fullCommand && fullCommand !== subCommand) {
+      sections.push(`Full command:\n${fullCommand}`);
+    }
+    if (agentName) {
+      sections.push(`Requested by:\n${subject}`);
+    }
+    sections.push("Allow this command?");
+    return sections.join("\n\n");
   }
 
   if (isMcpCheck(result) && result.target) {
@@ -75,22 +77,18 @@ export function formatAskPrompt(
   return `${subject} requested tool '${result.toolName}'${patternInfo}${inputSuffix}. Allow this call?`;
 }
 
-function formatBashAskReason(
-  result: PermissionCheckResult,
-  command: string,
-): string {
-  const prefix = `Reason: '${command}' is the part requiring approval because`;
+function formatBashAskReason(result: PermissionCheckResult): string {
   switch (result.matchedPattern) {
     case "<indirection-bash-wrapper>":
-      return `${prefix} it uses a command wrapper that can run another command indirectly.`;
+      return "Reason: This part uses a command wrapper that can run another command indirectly.";
     case "<opaque-bash-wrapper>":
-      return `${prefix} it contains a shell payload the permission system cannot inspect separately.`;
+      return "Reason: This part contains a shell payload the permission system cannot inspect separately.";
     case "<unparseable-bash-command>":
-      return `${prefix} the permission system could not reliably parse it into checkable command parts.`;
+      return "Reason: The permission system could not reliably parse this into checkable command parts.";
     case undefined:
-      return `${prefix} the active bash policy requires confirmation.`;
+      return "Reason: The active bash policy requires confirmation for this part of the command.";
     default:
-      return `${prefix} it matched bash rule '${result.matchedPattern}', which requires confirmation.`;
+      return `Reason: Bash rule '${result.matchedPattern}' requires confirmation for this part of the command.`;
   }
 }
 
