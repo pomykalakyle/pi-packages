@@ -5,6 +5,7 @@ import type {
   requestPermissionDecision,
 } from "#src/authority/permission-prompt-component";
 import type { SubagentSessionRegistry } from "#src/authority/subagent-registry";
+import type { BashCommandReviewer } from "#src/bash-command-reviewer";
 import type { PermissionEventBus } from "#src/permission-events";
 import type { AuthorizerLog, PermissionQuery } from "#src/service";
 import type { DebugReviewLogger } from "#src/session-logger";
@@ -68,6 +69,8 @@ export interface AuthorizerSelectionDeps {
   getPromptPreferences: () => PromptPreferences;
   /** Injected for testability; production callers pass the real function. */
   requestPermissionDecision: typeof requestPermissionDecision;
+  /** Builds the session-scoped one-shot reviewer used only by the local UI terminal. */
+  createCommandReviewer?: (ctx: ExtensionContext) => BashCommandReviewer;
   /** Forwarding directory `ParentAuthorizer` reads/writes request and response files under. */
   forwardingDir: string;
   /** In-process subagent session registry for forwarding target resolution. */
@@ -94,6 +97,7 @@ export function selectAuthorizer(
       events: deps.events,
       getPromptPreferences: deps.getPromptPreferences,
       requestPermissionDecision: deps.requestPermissionDecision,
+      commandReviewer: deps.createCommandReviewer?.(ctx),
     });
   }
   if (deps.detection.isSubagent(ctx)) {

@@ -31,7 +31,10 @@ export interface PromptPermissionDetails {
   toolName?: string;
   skillName?: string;
   path?: string;
+  /** Exact command unit whose rule triggered this ask. */
   command?: string;
+  /** Complete shell command, when it differs from the selected command unit. */
+  fullCommand?: string;
   target?: string;
   toolInputPreview?: string;
   /** Override label for the "for this session" dialog option. */

@@ -117,6 +117,32 @@ describe("describeToolGate", () => {
     expect(desc.promptDetails.toolName).toBe("exec_command");
   });
 
+  it("carries the full shell command alongside the selected command unit", () => {
+    const shell: ShellInvocation = {
+      command: `printf 'test\\n' | xargs echo`,
+      workdir: undefined,
+    };
+    const check = makeCheckResult("ask", {
+      toolName: "bash",
+      source: "bash",
+      command: "xargs echo",
+    });
+
+    const desc = describeToolGate(
+      makeTcc({
+        toolName: "bash",
+        input: { command: shell.command },
+      }),
+      check,
+      makeFormatter(),
+      undefined,
+      shell,
+    );
+
+    expect(desc.promptDetails.command).toBe("xargs echo");
+    expect(desc.promptDetails.fullCommand).toBe(shell.command);
+  });
+
   it("returns mcp surface with target in decision.value for MCP tools", () => {
     const check = makeCheckResult("ask", {
       toolName: "mcp",

@@ -3,6 +3,7 @@ import { LocalUserAuthorizer } from "#src/authority/local-user-authorizer";
 import type { PermissionPromptDecision } from "#src/authority/permission-dialog";
 import type { requestPermissionDecision } from "#src/authority/permission-prompt-component";
 import type { PromptPermissionDetails } from "#src/authority/permission-prompter";
+import type { BashCommandReviewer } from "#src/bash-command-reviewer";
 
 // ── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -33,6 +34,7 @@ function makePromptUi() {
 function makeDeps(
   overrides: {
     requestPermissionDecision?: typeof requestPermissionDecision;
+    commandReviewer?: BashCommandReviewer;
   } = {},
 ) {
   const events = {
@@ -52,6 +54,7 @@ function makeDeps(
       events,
       getPromptPreferences: () => ({ doublePressToConfirm: true }),
       requestPermissionDecision: decisionFn,
+      commandReviewer: overrides.commandReviewer,
     },
     events,
     ui,
@@ -120,6 +123,130 @@ describe("LocalUserAuthorizer", () => {
       "Allow read?",
       undefined,
     );
+  });
+
+  describe("bash command review", () => {
+    it("adds the explanation and security review before the command", async () => {
+      const commandReviewer: BashCommandReviewer = {
+        review: vi.fn(async () => ({
+          explanation: "Reads input and prints each item.",
+          securityAssessment: "no-obvious-concerns" as const,
+          securitySummary: "No concrete security concerns are visible.",
+        })),
+      };
+      const { deps, events, decisionFn } = makeDeps({ commandReviewer });
+      const authorizer = new LocalUserAuthorizer(deps);
+      const message = [
+        "Why this needs approval:",
+        "This part uses a command wrapper.",
+        "",
+        "Command requiring approval:",
+        "xargs echo",
+        "",
+        "Full command:",
+        `printf 'test' | xargs echo`,
+        "",
+        "Allow this command?",
+      ].join("\n");
+
+      await authorizer.authorize(
+        makeDetails({
+          toolName: "bash",
+          command: "xargs echo",
+          fullCommand: `printf 'test' | xargs echo`,
+          message,
+          accessIntent: {
+            surface: "bash",
+            matchValues: ["xargs echo"],
+            boundaryValue: null,
+          },
+        }),
+      );
+
+      expect(commandReviewer.review).toHaveBeenCalledWith({
+        command: "xargs echo",
+        fullCommand: `printf 'test' | xargs echo`,
+      });
+      const reviewedMessage = [
+        "Why this needs approval:",
+        "This part uses a command wrapper.",
+        "",
+        "What it does:",
+        "Reads input and prints each item.",
+        "",
+        "Security review:",
+        "No obvious concerns — No concrete security concerns are visible.",
+        "",
+        "Command requiring approval:",
+        "xargs echo",
+        "",
+        "Full command:",
+        `printf 'test' | xargs echo`,
+        "",
+        "Allow this command?",
+      ].join("\n");
+      expect(decisionFn).toHaveBeenCalledWith(
+        expect.anything(),
+        "Permission Required",
+        reviewedMessage,
+        undefined,
+      );
+      expect(events.emit).toHaveBeenCalledWith(
+        "permissions:ui_prompt",
+        expect.objectContaining({ message: reviewedMessage }),
+      );
+    });
+
+    it("does not review a command attached to a non-bash gate", async () => {
+      const commandReviewer: BashCommandReviewer = {
+        review: vi.fn(async () => null),
+      };
+      const { deps } = makeDeps({ commandReviewer });
+      const authorizer = new LocalUserAuthorizer(deps);
+
+      await authorizer.authorize(
+        makeDetails({
+          command: "cat /tmp/secret",
+          accessIntent: {
+            surface: "external_directory",
+            matchValues: ["/tmp/secret"],
+            boundaryValue: "/tmp/secret",
+          },
+        }),
+      );
+
+      expect(commandReviewer.review).not.toHaveBeenCalled();
+    });
+
+    it("continues to the original prompt when the review fails", async () => {
+      const commandReviewer: BashCommandReviewer = {
+        review: vi.fn(async () => {
+          throw new Error("review unavailable");
+        }),
+      };
+      const { deps, decisionFn } = makeDeps({ commandReviewer });
+      const authorizer = new LocalUserAuthorizer(deps);
+
+      await authorizer.authorize(
+        makeDetails({
+          toolName: "bash",
+          command: "git push",
+          message: "Original prompt",
+          accessIntent: {
+            surface: "bash",
+            matchValues: ["git push"],
+            boundaryValue: null,
+          },
+        }),
+      );
+
+      expect(decisionFn).toHaveBeenCalledWith(
+        expect.anything(),
+        "Permission Required",
+        "Original prompt",
+        undefined,
+      );
+    });
   });
 
   it("passes the sessionLabel option when present", async () => {

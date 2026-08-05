@@ -1,3 +1,4 @@
+import { complete } from "@earendil-works/pi-ai";
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { getAgentDir, getPackageDir } from "@earendil-works/pi-coding-agent";
 import { warmBashParser } from "./access-intent/bash/parser";
@@ -14,6 +15,7 @@ import { PermissionPrompter } from "./authority/permission-prompter";
 import { SubagentDetection } from "./authority/subagent-detection";
 import { subscribeSubagentLifecycle } from "./authority/subagent-lifecycle-events";
 import { getSubagentSessionRegistry } from "./authority/subagent-registry";
+import { createBashCommandReviewer } from "./bash-command-reviewer";
 import { registerBuiltinToolInputFormatters } from "./builtin-tool-input-formatters";
 import { registerPermissionSystemCommand } from "./config-modal";
 import { getGlobalConfigPath } from "./config-paths";
@@ -109,6 +111,12 @@ export default function piPermissionSystemExtension(pi: ExtensionAPI): void {
       doublePressToConfirm: configStore.current().doublePressToConfirm,
     }),
     requestPermissionDecision,
+    createCommandReviewer: (ctx) =>
+      createBashCommandReviewer({
+        registry: ctx.modelRegistry,
+        complete,
+        cwd: ctx.cwd,
+      }),
     forwardingDir: paths.forwardingDir,
     registry: subagentRegistry,
     logger,

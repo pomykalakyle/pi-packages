@@ -78,17 +78,22 @@ export function formatAskPrompt(
 }
 
 function formatBashAskReason(result: PermissionCheckResult): string {
+  const explanation = bashApprovalExplanation(result);
+  return `Why this needs approval:\n${explanation}`;
+}
+
+function bashApprovalExplanation(result: PermissionCheckResult): string {
   switch (result.matchedPattern) {
     case "<indirection-bash-wrapper>":
-      return "Reason: This part uses a command wrapper that can run another command indirectly.";
+      return "This part uses a command wrapper that can run another command indirectly.";
     case "<opaque-bash-wrapper>":
-      return "Reason: This part contains a shell payload the permission system cannot inspect separately.";
+      return "This part contains a shell payload the permission system cannot inspect separately.";
     case "<unparseable-bash-command>":
-      return "Reason: The permission system could not reliably parse this into checkable command parts.";
+      return "The permission system could not reliably parse this into checkable command parts.";
     case undefined:
-      return "Reason: The active bash policy requires confirmation for this part of the command.";
+      return "The active bash policy requires confirmation for this part of the command.";
     default:
-      return `Reason: Bash rule '${result.matchedPattern}' requires confirmation for this part of the command.`;
+      return `Bash rule '${result.matchedPattern}' requires confirmation for this part of the command.`;
   }
 }
 

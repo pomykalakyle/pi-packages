@@ -112,6 +112,9 @@ export function describeToolGate(
       toolName: tcc.toolName,
       sessionLabel: suggestion.label,
       accessIntent,
+      ...(shell && shell.command !== check.command
+        ? { fullCommand: shell.command }
+        : {}),
       ...permissionLogContext,
     },
     logContext: {

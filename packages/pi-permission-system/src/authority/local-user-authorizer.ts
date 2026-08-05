@@ -8,6 +8,10 @@ import type {
   PromptPreferences,
   requestPermissionDecision,
 } from "#src/authority/permission-prompt-component";
+import type {
+  BashCommandReview,
+  BashCommandReviewer,
+} from "#src/bash-command-reviewer";
 import { buildForwardedScopeLabels } from "#src/pattern-suggest";
 import {
   emitUiPromptEvent,
@@ -29,6 +33,8 @@ export interface LocalUserAuthorizerDeps {
   getPromptPreferences: () => PromptPreferences;
   /** Injected for testability; production callers pass the real function. */
   requestPermissionDecision: typeof requestPermissionDecision;
+  /** Optional one-shot reviewer for bash asks; failure never prevents the human prompt. */
+  commandReviewer?: BashCommandReviewer;
 }
 
 /**
@@ -44,10 +50,11 @@ export interface LocalUserAuthorizerDeps {
 export class LocalUserAuthorizer implements TerminalAuthorizer {
   constructor(private readonly deps: LocalUserAuthorizerDeps) {}
 
-  authorize(
+  async authorize(
     details: PromptPermissionDetails,
   ): Promise<PermissionPromptDecision> {
-    const uiPrompt = buildUiPrompt(details);
+    const reviewedDetails = await this.addCommandReview(details);
+    const uiPrompt = buildUiPrompt(reviewedDetails);
     emitUiPromptEvent(this.deps.events, uiPrompt);
     return this.deps.requestPermissionDecision(
       {
@@ -59,9 +66,59 @@ export class LocalUserAuthorizer implements TerminalAuthorizer {
       details.forwarding
         ? "Permission Required (Subagent)"
         : "Permission Required",
-      details.message,
+      reviewedDetails.message,
       buildRequestOptions(details),
     );
+  }
+
+  private async addCommandReview(
+    details: PromptPermissionDetails,
+  ): Promise<PromptPermissionDetails> {
+    if (
+      details.accessIntent?.surface !== "bash" ||
+      !details.command ||
+      !this.deps.commandReviewer
+    ) {
+      return details;
+    }
+    try {
+      const review = await this.deps.commandReviewer.review({
+        command: details.command,
+        fullCommand: details.fullCommand,
+      });
+      return review
+        ? { ...details, message: insertCommandReview(details.message, review) }
+        : details;
+    } catch {
+      return details;
+    }
+  }
+}
+
+function insertCommandReview(
+  message: string,
+  review: BashCommandReview,
+): string {
+  const commandSection = "\n\nCommand requiring approval";
+  const insertionPoint = message.indexOf(commandSection);
+  if (insertionPoint < 0) {
+    return message;
+  }
+  const reviewSections = [
+    `What it does:\n${review.explanation}`,
+    `Security review:\n${formatSecurityAssessment(review)} — ${review.securitySummary}`,
+  ].join("\n\n");
+  return `${message.slice(0, insertionPoint)}\n\n${reviewSections}${message.slice(insertionPoint)}`;
+}
+
+function formatSecurityAssessment(review: BashCommandReview): string {
+  switch (review.securityAssessment) {
+    case "no-obvious-concerns":
+      return "No obvious concerns";
+    case "concerns-found":
+      return "Concerns found";
+    case "unknown":
+      return "Unknown";
   }
 }
 
