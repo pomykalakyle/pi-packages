@@ -104,6 +104,7 @@ describe("createBashCommandReviewer", () => {
         headers?: Record<string, string>;
         env?: Record<string, string>;
         reasoningEffort?: string;
+        serviceTier?: string;
         toolChoice?: string;
       },
     ];
@@ -135,6 +136,7 @@ describe("createBashCommandReviewer", () => {
       headers: { "x-test": "1" },
       env: { PI_TEST: "yes" },
       reasoningEffort: "low",
+      serviceTier: "priority",
       signal: expect.any(AbortSignal),
       toolChoice: "any",
     });
