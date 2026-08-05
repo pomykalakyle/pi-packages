@@ -152,13 +152,20 @@ describe("presentInlinePermissionPrompt", () => {
     highlightCodeMock.mockClear();
     const { view, captured } = makeFakeView(true);
     const message = [
-      "Reason: This part uses a command wrapper.",
-      "",
       "Command requiring approval:",
       "xargs echo",
       "",
+      "Why this needs approval:",
+      "This part uses a command wrapper.",
+      "",
       "Full command:",
       `printf 'test' | xargs echo`,
+      "",
+      "What it does:",
+      "Prints each input item.",
+      "",
+      "Security review:",
+      "No obvious concerns.",
       "",
       "Allow this command?",
     ].join("\n");

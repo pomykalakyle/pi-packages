@@ -331,11 +331,15 @@ function highlightBashCommandSections(message: string): string {
         inCommandSection = true;
         return line;
       }
+      if (line.length === 0) {
+        inCommandSection = false;
+        return line;
+      }
       if (line === "Requested by:" || line === "Allow this command?") {
         inCommandSection = false;
         return line;
       }
-      if (!inCommandSection || line.length === 0) {
+      if (!inCommandSection) {
         return line;
       }
       return highlightCode(line, "bash")[0] ?? line;
