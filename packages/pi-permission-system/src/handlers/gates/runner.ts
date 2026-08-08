@@ -1,11 +1,11 @@
 import type { AskEscalator } from "#src/authority/authorizer-selection";
 import type { PermissionPromptDecision } from "#src/authority/permission-dialog";
-import type { DecisionReporter } from "#src/decision-reporter";
 import {
   formatDenyReason,
   formatUnavailableReason,
   formatUserDeniedReason,
 } from "#src/denial-messages";
+import type { DecisionReporter } from "#src/logging/decision-reporter";
 import { applyPermissionGate } from "#src/permission-gate";
 import type { ScopedPermissionResolver } from "#src/permission-resolver";
 import type { SessionApprovalRecorder } from "#src/session-approval-recorder";

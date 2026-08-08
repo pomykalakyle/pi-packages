@@ -3,7 +3,7 @@ import type {
   FlatPermissionConfig,
   PatternValue,
   PermissionState,
-} from "./config-schema";
+} from "./config/config-schema";
 import type { RuleOrigin } from "./rule";
 
 // The config-file shape types are derived from the zod schema

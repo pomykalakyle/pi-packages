@@ -1,6 +1,6 @@
 import type { ExtensionContext } from "@earendil-works/pi-coding-agent";
-import type { DecisionRecorder } from "#src/decision-audit";
-import type { DecisionReporter } from "#src/decision-reporter";
+import type { DecisionRecorder } from "#src/logging/decision-audit";
+import type { DecisionReporter } from "#src/logging/decision-reporter";
 import { toRecord } from "#src/value-guards";
 import type { GateOutcome } from "./gates/types";
 

@@ -7,15 +7,15 @@ import {
   getGlobalConfigPath,
   getProjectAgentsDir,
   getProjectConfigPath,
-} from "./config-paths";
-import { normalizeFlatConfig } from "./normalize";
-import { type PathFlavor, posixPathFlavor } from "./path/path-flavor";
+} from "./config/config-paths";
 import {
   FilePolicyLoader,
   type PolicyLoader,
   type PolicyLoaderOptions,
   type ResolvedPolicyPaths,
-} from "./policy-loader";
+} from "./config/policy-loader";
+import { normalizeFlatConfig } from "./normalize";
+import { type PathFlavor, posixPathFlavor } from "./path/path-flavor";
 import type { Rule, RuleOrigin, Ruleset } from "./rule";
 import {
   evaluate,
@@ -427,4 +427,4 @@ function deriveSource(
 }
 
 // Re-export types that external modules import from this file.
-export type { PolicyLoader, ResolvedPolicyPaths } from "./policy-loader";
+export type { PolicyLoader, ResolvedPolicyPaths } from "./config/policy-loader";

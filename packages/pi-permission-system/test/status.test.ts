@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { DEFAULT_EXTENSION_CONFIG } from "#src/extension-config";
+import { DEFAULT_EXTENSION_CONFIG } from "#src/config/extension-config";
 import { getPermissionSystemStatus } from "#src/status";
 
 test("Permission-system status is only exposed when yolo mode is enabled", () => {

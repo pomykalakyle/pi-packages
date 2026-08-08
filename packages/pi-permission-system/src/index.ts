@@ -16,13 +16,10 @@ import { SubagentDetection } from "./authority/subagent-detection";
 import { subscribeSubagentLifecycle } from "./authority/subagent-lifecycle-events";
 import { getSubagentSessionRegistry } from "./authority/subagent-registry";
 import { createBashCommandReviewer } from "./bash-command-reviewer";
-import { registerBuiltinToolInputFormatters } from "./builtin-tool-input-formatters";
-import { registerPermissionSystemCommand } from "./config-modal";
-import { getGlobalConfigPath } from "./config-paths";
-import { ConfigStore } from "./config-store";
-import { DecisionAudit } from "./decision-audit";
-import { GateDecisionReporter } from "./decision-reporter";
-import { isYoloModeEnabled } from "./extension-config";
+import { registerPermissionSystemCommand } from "./config/config-modal";
+import { getGlobalConfigPath } from "./config/config-paths";
+import { ConfigStore } from "./config/config-store";
+import { isYoloModeEnabled } from "./config/extension-config";
 import { computeExtensionPaths } from "./extension-paths";
 import {
   AgentPrepHandler,
@@ -33,16 +30,19 @@ import { GateRunner } from "./handlers/gates/runner";
 import { SkillInputGatePipeline } from "./handlers/gates/skill-input-gate-pipeline";
 import { ToolCallGatePipeline } from "./handlers/gates/tool-call-gate-pipeline";
 import { createFailClosedToolCall } from "./handlers/tool-call-boundary";
+import { DecisionAudit } from "./logging/decision-audit";
+import { GateDecisionReporter } from "./logging/decision-reporter";
+import { PermissionSessionLogger } from "./logging/session-logger";
 import { pathFlavorForPlatform } from "./path/path-flavor";
 import { PermissionManager } from "./permission-manager";
 import { PermissionResolver } from "./permission-resolver";
 import { PermissionSession } from "./permission-session";
 import { LocalPermissionsService } from "./permissions-service";
 import { PermissionServiceLifecycle } from "./service-lifecycle";
-import { PermissionSessionLogger } from "./session-logger";
 import { SessionRules } from "./session-rules";
 import { ToolAccessExtractorRegistry } from "./tool-access-extractor-registry";
-import { ToolInputFormatterRegistry } from "./tool-input-formatter-registry";
+import { registerBuiltinToolInputFormatters } from "./tool-preview/builtin-tool-input-formatters";
+import { ToolInputFormatterRegistry } from "./tool-preview/tool-input-formatter-registry";
 
 export default function piPermissionSystemExtension(pi: ExtensionAPI): void {
   const agentDir = getAgentDir();

@@ -8,7 +8,7 @@ import type { ToolAccessExtractorRegistrar } from "#src/tool-access-extractor-re
 import type {
   ToolInputFormatter,
   ToolInputFormatterRegistrar,
-} from "#src/tool-input-formatter-registry";
+} from "#src/tool-preview/tool-input-formatter-registry";
 import type { PermissionCheckResult, PermissionState } from "#src/types";
 
 import { makeCheckResult } from "#test/helpers/handler-fixtures";

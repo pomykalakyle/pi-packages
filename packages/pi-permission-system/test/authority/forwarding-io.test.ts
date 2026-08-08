@@ -27,7 +27,7 @@ import {
   type ForwardedAccessIntent,
   type ForwardedPermissionRequest,
 } from "#src/authority/permission-forwarding";
-import type { DebugReviewLogger } from "#src/session-logger";
+import type { DebugReviewLogger } from "#src/logging/session-logger";
 
 // ── helpers ────────────────────────────────────────────────────────────────
 

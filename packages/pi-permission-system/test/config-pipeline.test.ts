@@ -3,8 +3,8 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
-import { loadAndMergeConfigs } from "#src/config-loader";
-import { normalizePermissionSystemConfig } from "#src/extension-config";
+import { loadAndMergeConfigs } from "#src/config/config-loader";
+import { normalizePermissionSystemConfig } from "#src/config/extension-config";
 
 /**
  * Full-pipeline seam tests: write a temp config.json → loadAndMergeConfigs →

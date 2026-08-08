@@ -13,9 +13,9 @@ import {
   type PermissionForwardingLocation,
 } from "#src/authority/permission-forwarding";
 import type { SubagentSessionRegistry } from "#src/authority/subagent-registry";
+import type { DebugReviewLogger } from "#src/logging/session-logger";
 import { SessionApproval } from "#src/session-approval";
 import type { SessionApprovalRecorder } from "#src/session-approval-recorder";
-import type { DebugReviewLogger } from "#src/session-logger";
 import type { PermissionCheckResult } from "#src/types";
 import type { AskEscalator } from "./authorizer-selection";
 import {

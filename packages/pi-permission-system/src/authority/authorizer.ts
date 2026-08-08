@@ -6,9 +6,9 @@ import type {
 } from "#src/authority/permission-prompt-component";
 import type { SubagentSessionRegistry } from "#src/authority/subagent-registry";
 import type { BashCommandReviewer } from "#src/bash-command-reviewer";
+import type { DebugReviewLogger } from "#src/logging/session-logger";
 import type { PermissionEventBus } from "#src/permission-events";
 import type { AuthorizerLog, PermissionQuery } from "#src/service";
-import type { DebugReviewLogger } from "#src/session-logger";
 import { ParentAuthorizer } from "./approval-escalator";
 import { DenyingAuthorizer } from "./denying-authorizer";
 import { LocalUserAuthorizer } from "./local-user-authorizer";

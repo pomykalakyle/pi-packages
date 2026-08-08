@@ -13,7 +13,7 @@
 
 import type { Authorizer } from "./authority/authorizer";
 import type { ToolAccessExtractor } from "./tool-access-extractor-registry";
-import type { ToolInputFormatter } from "./tool-input-formatter-registry";
+import type { ToolInputFormatter } from "./tool-preview/tool-input-formatter-registry";
 import type { PermissionCheckResult, PermissionState } from "./types";
 
 export type {

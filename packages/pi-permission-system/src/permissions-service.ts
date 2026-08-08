@@ -12,7 +12,7 @@ import type {
 import type {
   ToolInputFormatter,
   ToolInputFormatterRegistrar,
-} from "./tool-input-formatter-registry";
+} from "./tool-preview/tool-input-formatter-registry";
 import type { PermissionCheckResult, PermissionState } from "./types";
 
 /**

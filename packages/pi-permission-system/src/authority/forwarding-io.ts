@@ -21,9 +21,9 @@ import {
 import {
   OWNER_ONLY_DIRECTORY_MODE,
   OWNER_ONLY_FILE_MODE,
-} from "#src/log-file-permissions";
+} from "#src/logging/log-file-permissions";
+import type { DebugReviewLogger } from "#src/logging/session-logger";
 import type { PermissionUiPromptSource } from "#src/permission-events";
-import type { DebugReviewLogger } from "#src/session-logger";
 
 /** Valid `permissions:ui_prompt` source values, for tolerant request reads. */
 const UI_PROMPT_SOURCES = [

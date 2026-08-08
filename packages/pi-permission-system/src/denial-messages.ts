@@ -1,5 +1,5 @@
 import { classifyToolKind, isMcpCheck } from "./access-intent/tool-kind";
-import { EXTENSION_ID } from "./extension-config";
+import { EXTENSION_ID } from "./config/extension-config";
 import type { BashCommandContext, PermissionCheckResult } from "./types";
 
 // ── Extension attribution tag ──────────────────────────────────────────────

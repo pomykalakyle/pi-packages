@@ -3,20 +3,20 @@
  */
 import { vi } from "vitest";
 import type { AskEscalator } from "#src/authority/authorizer-selection";
-import type { ShellToolsConfig } from "#src/config-schema";
-import type { DecisionReporter } from "#src/decision-reporter";
+import type { ShellToolsConfig } from "#src/config/config-schema";
 import type { DenialContext } from "#src/denial-messages";
 import type { GateDescriptor } from "#src/handlers/gates/descriptor";
 import { GateRunner } from "#src/handlers/gates/runner";
 import type { SkillInputGateInputs } from "#src/handlers/gates/skill-input-gate-pipeline";
 import type { ToolCallGateInputs } from "#src/handlers/gates/tool-call-gate-pipeline";
 import type { ToolCallContext } from "#src/handlers/gates/types";
+import type { DecisionReporter } from "#src/logging/decision-reporter";
 import { pathFlavorForPlatform } from "#src/path/path-flavor";
 import { PathNormalizer } from "#src/path-normalizer";
 import type { ScopedPermissionResolver } from "#src/permission-resolver";
 import type { SessionApprovalRecorder } from "#src/session-approval-recorder";
 import type { SkillPromptEntry } from "#src/skill-prompt-sanitizer";
-import type { ToolPreviewFormatterOptions } from "#src/tool-preview-formatter";
+import type { ToolPreviewFormatterOptions } from "#src/tool-preview/tool-preview-formatter";
 import type { PermissionCheckResult } from "#src/types";
 
 import { makeCheckResult } from "#test/helpers/handler-fixtures";

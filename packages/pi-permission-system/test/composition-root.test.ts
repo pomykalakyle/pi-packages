@@ -34,8 +34,8 @@ import {
 } from "#src/authority/permission-forwarding";
 import { SUBAGENT_CHILD_SESSION_CREATED } from "#src/authority/subagent-lifecycle-events";
 import { getSubagentSessionRegistry } from "#src/authority/subagent-registry";
-import { getGlobalConfigPath } from "#src/config-paths";
-import { DEFAULT_EXTENSION_CONFIG } from "#src/extension-config";
+import { getGlobalConfigPath } from "#src/config/config-paths";
+import { DEFAULT_EXTENSION_CONFIG } from "#src/config/extension-config";
 import piPermissionSystemExtension from "#src/index";
 import { PERMISSIONS_READY_CHANNEL } from "#src/permission-events";
 import { getPermissionsService } from "#src/service";

@@ -11,7 +11,7 @@ import {
   unpublishPermissionsService,
 } from "#src/service";
 import { ToolAccessExtractorRegistry } from "#src/tool-access-extractor-registry";
-import { ToolInputFormatterRegistry } from "#src/tool-input-formatter-registry";
+import { ToolInputFormatterRegistry } from "#src/tool-preview/tool-input-formatter-registry";
 import type { PermissionCheckResult, PermissionState } from "#src/types";
 
 // ── helpers ────────────────────────────────────────────────────────────────

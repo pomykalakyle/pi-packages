@@ -7,7 +7,7 @@ const { highlightBashCommandMock } = vi.hoisted(() => ({
   ),
 }));
 
-vi.mock("#src/bash-syntax-highlighter", () => ({
+vi.mock("#src/tool-preview/bash-syntax-highlighter", () => ({
   highlightBashCommand: highlightBashCommandMock,
 }));
 

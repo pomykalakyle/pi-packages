@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { highlightBashCommand } from "#src/bash-syntax-highlighter";
+import { highlightBashCommand } from "#src/tool-preview/bash-syntax-highlighter";
 
 const theme = {
   fg(color: string, text: string) {

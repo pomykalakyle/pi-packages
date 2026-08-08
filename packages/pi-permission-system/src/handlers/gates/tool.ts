@@ -8,7 +8,7 @@ import {
 import { suggestSessionPattern } from "#src/pattern-suggest";
 import { formatAskPrompt } from "#src/permission-prompts";
 import { SessionApproval } from "#src/session-approval";
-import type { ToolPreviewFormatter } from "#src/tool-preview-formatter";
+import type { ToolPreviewFormatter } from "#src/tool-preview/tool-preview-formatter";
 import type { PermissionCheckResult } from "#src/types";
 import type { GateDescriptor } from "./descriptor";
 import {

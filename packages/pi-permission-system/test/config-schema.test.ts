@@ -7,12 +7,12 @@ import type {
   FlatPermissionConfig as SchemaFlatPermissionConfig,
   PatternValue as SchemaPatternValue,
   PermissionState as SchemaPermissionState,
-} from "#src/config-schema";
+} from "#src/config/config-schema";
 import {
   buildPermissionsJsonSchema,
   PERMISSIONS_SCHEMA_URL,
   unifiedConfigSchema,
-} from "#src/config-schema";
+} from "#src/config/config-schema";
 import type {
   DenyWithReason,
   FlatPermissionConfig,

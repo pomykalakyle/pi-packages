@@ -14,8 +14,8 @@ import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import {
   DEFAULT_EXTENSION_CONFIG,
   type PermissionSystemExtensionConfig,
-} from "#src/extension-config";
-import { createPermissionSystemLogger } from "#src/logging";
+} from "#src/config/extension-config";
+import { createPermissionSystemLogger } from "#src/logging/logging";
 
 describe("createPermissionSystemLogger", () => {
   let baseDir: string;

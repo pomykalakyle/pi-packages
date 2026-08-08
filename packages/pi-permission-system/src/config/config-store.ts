@@ -10,7 +10,8 @@ import type {
   ExtensionCommandContext,
   ExtensionContext,
 } from "@earendil-works/pi-coding-agent";
-
+import type { DebugReviewLogger } from "#src/logging/session-logger";
+import { syncPermissionSystemStatus } from "#src/status";
 import { loadAndMergeConfigs, loadUnifiedConfig } from "./config-loader";
 import {
   getGlobalConfigPath,
@@ -26,8 +27,6 @@ import {
   type PermissionSystemExtensionConfig,
 } from "./extension-config";
 import type { ResolvedPolicyPaths } from "./policy-loader";
-import type { DebugReviewLogger } from "./session-logger";
-import { syncPermissionSystemStatus } from "./status";
 
 /** Read-only view of the current config — for consumers that only read. */
 export interface ConfigReader {

@@ -3,7 +3,7 @@ import { appendFileSync } from "node:fs";
 import {
   EXTENSION_ID,
   type PermissionSystemExtensionConfig,
-} from "./extension-config";
+} from "#src/config/extension-config";
 import {
   OWNER_ONLY_FILE_MODE,
   restrictExistingPathToOwner,

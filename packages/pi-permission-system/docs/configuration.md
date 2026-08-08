@@ -961,4 +961,4 @@ npx --yes ajv-cli@5 validate \
 "$schema": "https://raw.githubusercontent.com/gotgenes/pi-packages/main/packages/pi-permission-system/schemas/permissions.schema.json"
 ```
 
-The schema is generated from the extension's zod source of truth (`src/config-schema.ts`); regenerate it with `pnpm run gen:schema` after changing the config shape.
+The schema is generated from the extension's zod source of truth (`src/config/config-schema.ts`); regenerate it with `pnpm run gen:schema` after changing the config shape.

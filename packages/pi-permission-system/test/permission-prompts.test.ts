@@ -7,13 +7,13 @@ import {
   formatUnknownToolReason,
 } from "#src/permission-prompts";
 import type { SkillPromptEntry } from "#src/skill-prompt-sanitizer";
-import type { ToolInputFormatterLookup } from "#src/tool-input-formatter-registry";
+import type { ToolInputFormatterLookup } from "#src/tool-preview/tool-input-formatter-registry";
 import {
   TOOL_INPUT_LOG_PREVIEW_MAX_LENGTH,
   TOOL_INPUT_PREVIEW_MAX_LENGTH,
   TOOL_TEXT_SUMMARY_MAX_LENGTH,
-} from "#src/tool-input-preview";
-import { ToolPreviewFormatter } from "#src/tool-preview-formatter";
+} from "#src/tool-preview/tool-input-preview";
+import { ToolPreviewFormatter } from "#src/tool-preview/tool-preview-formatter";
 import type { PermissionCheckResult } from "#src/types";
 
 function makeFormatter(

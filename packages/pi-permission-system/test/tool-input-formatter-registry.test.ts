@@ -3,7 +3,7 @@ import { describe, expect, test } from "vitest";
 import {
   type ToolInputFormatter,
   ToolInputFormatterRegistry,
-} from "#src/tool-input-formatter-registry";
+} from "#src/tool-preview/tool-input-formatter-registry";
 
 const noopFormatter: ToolInputFormatter = () => "preview";
 

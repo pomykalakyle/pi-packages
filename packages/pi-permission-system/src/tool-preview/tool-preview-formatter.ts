@@ -1,5 +1,7 @@
-import { classifyToolKind, isMcpCheck } from "./access-intent/tool-kind";
-import type { PermissionSystemExtensionConfig } from "./extension-config";
+import { classifyToolKind, isMcpCheck } from "#src/access-intent/tool-kind";
+import type { PermissionSystemExtensionConfig } from "#src/config/extension-config";
+import type { PermissionCheckResult } from "#src/types";
+import { getNonEmptyString, toRecord } from "#src/value-guards";
 import type { ToolInputFormatterLookup } from "./tool-input-formatter-registry";
 import {
   serializeRedactedToolInputPreview,
@@ -15,8 +17,6 @@ import {
   formatWriteInputForPrompt,
   getPromptPath,
 } from "./tool-input-prompt-formatters";
-import type { PermissionCheckResult } from "./types";
-import { getNonEmptyString, toRecord } from "./value-guards";
 
 export interface ToolPreviewFormatterOptions {
   toolInputPreviewMaxLength: number;

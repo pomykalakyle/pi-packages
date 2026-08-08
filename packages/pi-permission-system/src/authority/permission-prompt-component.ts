@@ -22,7 +22,7 @@ import {
   type PromptViewState,
   reducePrompt,
 } from "#src/authority/permission-prompt-decision";
-import { highlightBashCommand } from "#src/bash-syntax-highlighter";
+import { highlightBashCommand } from "#src/tool-preview/bash-syntax-highlighter";
 
 /**
  * Inline `ctx.ui.custom` permission dialog for TUI sessions.

@@ -3,7 +3,7 @@ import type {
   ForwardedAccessFacts,
   ForwardedSessionApproval,
 } from "#src/authority/permission-forwarding";
-import type { ReviewLogger } from "#src/session-logger";
+import type { ReviewLogger } from "#src/logging/session-logger";
 import type { TerminalAuthorizer } from "./authorizer";
 
 export type PermissionReviewSource = "tool_call" | "skill_input" | "skill_read";

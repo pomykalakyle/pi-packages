@@ -1,5 +1,5 @@
 import { join } from "node:path";
-import { getGlobalLogsDir } from "./config-paths";
+import { getGlobalLogsDir } from "./config/config-paths";
 import { discoverGlobalNodeModulesRoot } from "./node-modules-discovery";
 
 /**

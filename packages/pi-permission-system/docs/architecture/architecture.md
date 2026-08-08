@@ -766,14 +766,16 @@ src/
 ├── service.ts                PermissionsService interface, Symbol.for() accessor (cross-extension API); public surface published as a self-contained dist/public.d.ts bundle
 ├── permission-events.ts      Event channel constants, payload types, emit helpers
 ├── permission-ui-prompt.ts   Centralized construction for `permissions:ui_prompt` event payloads - `buildUiPrompt` is the single builder for direct and forwarded asks, keeping the emitted contract shape in one place
-├── config-store.ts           `ConfigStore` class — owns `config` + `lastConfigWarning`; `ConfigReader`, `SessionConfigStore`, `CommandConfigStore` narrow interfaces
-├── config-loader.ts          File I/O, format detection, strict zod validation (fail-closed) for config files
-├── config-schema.ts          Zod schemas - single source of truth for the config shape; derives the JSON Schema (buildPermissionsJsonSchema) and the config types
-├── config-paths.ts           Path derivation
+├── config/                   Configuration loading, validation, storage, and UI
+│   ├── config-store.ts       `ConfigStore` class — owns `config` + `lastConfigWarning`; `ConfigReader`, `SessionConfigStore`, `CommandConfigStore` narrow interfaces
+│   ├── config-loader.ts      File I/O, format detection, strict zod validation (fail-closed) for config files
+│   ├── config-schema.ts      Zod schemas - single source of truth for the config shape; derives the JSON Schema (buildPermissionsJsonSchema) and the config types
+│   ├── config-paths.ts       Path derivation
+│   ├── config-reporter.ts    Structured log entries for resolved config
+│   ├── config-modal.ts       /permission-system slash command UI
+│   ├── extension-config.ts   Runtime knobs (debugLog, yoloMode, etc.)
+│   └── policy-loader.ts      Policy-file loading and config synthesis
 ├── extension-paths.ts        `ExtensionPaths` value object - immutable path constants derived from `agentDir` (and optional Pi `getPackageDir()`) at startup (`computeExtensionPaths`)
-├── config-reporter.ts        Structured log entries for resolved config
-├── config-modal.ts           /permission-system slash command UI
-├── extension-config.ts       Runtime knobs (debugLog, yoloMode, etc.)
 │
 ├── permission-merge.ts        Deep-shallow merge for flat permission configs
 ├── async-cache.ts             `memoizeAsyncWithRetry` - memoizes an async factory but drops a rejected result so the next call retries; used by `access-intent/bash/parser.ts` for resilient tree-sitter parser init
@@ -788,12 +790,14 @@ src/
 ├── skill-prompt-sanitizer.ts  Skill prompt filtering by policy
 ├── denial-messages.ts         Centralized denial message formatter - DenialContext type, EXTENSION_TAG, formatDenyReason/formatUnavailableReason/formatUserDeniedReason
 ├── permission-prompts.ts      User-facing ask-prompt formatting + pre-check error messages
-├── tool-input-preview.ts              Pure tool-input text utilities (truncation, line counting, count formatting), serialization + default constants; `serializeToolInputPreview` (prompt, unredacted) and `serializeRedactedToolInputPreview` (log) are separate entry points because the input is flattened to a string before the writer sees its keys
-├── tool-input-prompt-formatters.ts    Pure per-tool prompt formatters (edit/write/read) + getPromptPath helper
-├── tool-preview-formatter.ts          ToolPreviewFormatter class - config-dependent prompt + log formatting; seam-first dispatch consults ToolInputFormatterLookup before built-in switch
-├── tool-input-formatter-registry.ts   ToolInputFormatter type, ToolInputFormatterLookup + ToolInputFormatterRegistrar interfaces, ToolInputFormatterRegistry class - persistent registry for custom previews
+├── tool-preview/                      Tool-input presentation and formatting
+│   ├── tool-input-preview.ts          Pure tool-input text utilities (truncation, line counting, count formatting), serialization + default constants; `serializeToolInputPreview` (prompt, unredacted) and `serializeRedactedToolInputPreview` (log) are separate entry points because the input is flattened to a string before the writer sees its keys
+│   ├── tool-input-prompt-formatters.ts Pure per-tool prompt formatters (edit/write/read) + getPromptPath helper
+│   ├── tool-preview-formatter.ts      ToolPreviewFormatter class - config-dependent prompt + log formatting; seam-first dispatch consults ToolInputFormatterLookup before built-in switch
+│   ├── tool-input-formatter-registry.ts ToolInputFormatter type, ToolInputFormatterLookup + ToolInputFormatterRegistrar interfaces, ToolInputFormatterRegistry class - persistent registry for custom previews
+│   ├── builtin-tool-input-formatters.ts Built-in formatters registered at startup: formatMcpInputForPrompt keyed to "mcp"
+│   └── bash-syntax-highlighter.ts     Theme-aware bash syntax highlighting for permission prompts
 ├── tool-access-extractor-registry.ts  ToolAccessExtractor type, ToolAccessExtractorLookup + ToolAccessExtractorRegistrar interfaces, ToolAccessExtractorRegistry class - persistent registry letting extensions declare a tool's filesystem path for the path/external_directory gates
-├── builtin-tool-input-formatters.ts   Built-in formatters registered at startup: formatMcpInputForPrompt keyed to "mcp"
 ├── tool-registry.ts           ToolRegistry interface + tool name validation
 ├── active-agent.ts            Agent name detection from session/system prompt
 ├── authority/                 Subagent detection, the Authorizer spine, and forwarded-permission escalation
@@ -818,11 +822,14 @@ src/
 │   ├── forwarded-request-server.ts `ForwardedRequestServer` class (`InboxProcessor`) - serving-down role: `processInbox()` drains forwarded requests and resolves each like a local action - `ServingPolicy` (recorded authority) then `AskEscalator` on `ask`; `ServingPolicy.resolve(intent: ForwardedAccessIntent)` is intent-shaped (agent-scoped to `principal.agentName`, child-fixed `matchValues` used as-is, never re-derived through this session's `PathNormalizer`/cwd), floors to `ask` when `accessIntent` is absent (version skew); projects the request's access facts onto the escalated ask (`surface`/`matchValues`/`boundaryValue` only — `requesterCwd`/`principal` stay off the ask details, and the bounded-delegation checkpoint's exclusion reads the projected gate surface, #635); one-hop canary
 │   ├── forwarding-io.ts       Forwarding filesystem helpers - request/response read-write (tolerant read of the optional `accessIntent` field), location derivation, atomic JSON writes (owner-only; `rename` preserves the temp file's mode)
 │   └── forwarding-manager.ts  `ForwardingController` interface + `ForwardingManager` class - drives the forwarded-permission inbox polling lifecycle; tells `ForwardedRequestServer.processInbox`
-├── session-logger.ts          `SessionLogger` interface + `PermissionSessionLogger` class; owns JSONL-writer composition, IO-failure warning dedup, and notify sink
-├── logging.ts                 JSONL review/debug log writer; serializes through `redactedJsonStringify` and creates both logs owner-only
+├── logging/                   Decision reporting, auditing, and persistent logs
+│   ├── session-logger.ts      `SessionLogger` interface + `PermissionSessionLogger` class; owns JSONL-writer composition, IO-failure warning dedup, and notify sink
+│   ├── logging.ts             JSONL review/debug log writer; serializes through `redactedJsonStringify` and creates both logs owner-only
+│   ├── log-redaction.ts       `isSensitiveLogKey` + `redactedJsonStringify` - key-name masking applied at the log-write boundary. Constraint: structural, never value-shape; see `docs/decisions/0010-permission-log-secret-exposure.md`
+│   ├── log-file-permissions.ts Owner-only mode constants + best-effort `restrictExistingPathToOwner`; shared by the log writer, the logs-dir helper, and forwarding IO
+│   ├── decision-audit.ts      Session decision counters and shutdown summary
+│   └── decision-reporter.ts   Permission decision review-log reporting
 ├── json-safe-stringify.ts     `createJsonSafeReplacer` (Error → plain object, bigint → string, cycles → `[Circular]`) + `safeJsonStringify`; separate from the writer because the prompt path serializes tool input too, and only the log path redacts
-├── log-redaction.ts           `isSensitiveLogKey` + `redactedJsonStringify` - key-name masking applied at the log-write boundary. Constraint: structural, never value-shape; see `docs/decisions/0010-permission-log-secret-exposure.md`
-├── log-file-permissions.ts    Owner-only mode constants + best-effort `restrictExistingPathToOwner`; shared by the log writer, the logs-dir helper, and forwarding IO
 ├── status.ts                  Footer status bar integration
 ├── value-guards.ts            Runtime type guards (`toRecord`, `getNonEmptyString`)
 ├── yaml-frontmatter.ts        Minimal YAML/frontmatter parsing (`parseSimpleYamlMap`, `extractFrontmatter`)

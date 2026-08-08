@@ -5,9 +5,9 @@ import {
   getActiveAgentNameFromSystemPrompt,
 } from "./active-agent";
 import type { AuthorizerSelectionLifecycle } from "./authority/authorizer-selection";
-import type { ShellToolsConfig } from "./config-schema";
-import type { SessionConfigStore } from "./config-store";
-import type { PermissionSystemExtensionConfig } from "./extension-config";
+import type { ShellToolsConfig } from "./config/config-schema";
+import type { SessionConfigStore } from "./config/config-store";
+import type { PermissionSystemExtensionConfig } from "./config/extension-config";
 import type { ExtensionPaths } from "./extension-paths";
 import type { ToolCallGateInputs } from "./handlers/gates/tool-call-gate-pipeline";
 import type { PathFlavor } from "./path/path-flavor";
@@ -19,7 +19,7 @@ import type { SkillPromptEntry } from "./skill-prompt-sanitizer";
 import {
   resolveToolPreviewLimits,
   type ToolPreviewFormatterOptions,
-} from "./tool-preview-formatter";
+} from "./tool-preview/tool-preview-formatter";
 
 /**
  * Encapsulates all mutable session state and exposes operations instead of

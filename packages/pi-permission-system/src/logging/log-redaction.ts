@@ -1,4 +1,4 @@
-import { createJsonSafeReplacer } from "./json-safe-stringify";
+import { createJsonSafeReplacer } from "#src/json-safe-stringify";
 
 /**
  * Key-name redaction for the permission logs.
