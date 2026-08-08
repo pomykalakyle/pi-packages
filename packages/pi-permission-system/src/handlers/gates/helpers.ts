@@ -4,7 +4,7 @@ import type { ForwardedAccessFacts } from "#src/authority/permission-forwarding"
 import type {
   PermissionDecisionEvent,
   PermissionDecisionResolution,
-} from "#src/permission-events";
+} from "#src/permissions/permission-events";
 import type { PermissionCheckResult } from "#src/types";
 
 /**

@@ -20,7 +20,7 @@ import { PathNormalizer } from "#src/path-normalizer";
 import {
   PermissionManager,
   type ScopedPermissionManager,
-} from "#src/permission-manager";
+} from "#src/permissions/permission-manager";
 import type { Ruleset } from "#src/rule";
 import {
   createAgentDirHarness,

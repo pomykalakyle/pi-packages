@@ -1,19 +1,19 @@
-import type { AccessIntent } from "./access-intent/access-intent";
-import { buildAccessIntentForSurface } from "./access-intent/input-normalizer";
-import type { Authorizer } from "./authority/authorizer";
-import type { AuthorizerRegistrar } from "./authority/authorizer-registry";
-import { resolveBashAdvisoryCheck } from "./bash-advisory-check";
-import type { PathNormalizer } from "./path-normalizer";
-import type { PermissionsService } from "./service";
+import type { AccessIntent } from "#src/access-intent/access-intent";
+import { buildAccessIntentForSurface } from "#src/access-intent/input-normalizer";
+import type { Authorizer } from "#src/authority/authorizer";
+import type { AuthorizerRegistrar } from "#src/authority/authorizer-registry";
+import { resolveBashAdvisoryCheck } from "#src/bash-advisory-check";
+import type { PathNormalizer } from "#src/path-normalizer";
+import type { PermissionsService } from "#src/service";
 import type {
   ToolAccessExtractor,
   ToolAccessExtractorRegistrar,
-} from "./tool-access-extractor-registry";
+} from "#src/tool-access-extractor-registry";
 import type {
   ToolInputFormatter,
   ToolInputFormatterRegistrar,
-} from "./tool-preview/tool-input-formatter-registry";
-import type { PermissionCheckResult, PermissionState } from "./types";
+} from "#src/tool-preview/tool-input-formatter-registry";
+import type { PermissionCheckResult, PermissionState } from "#src/types";
 
 /**
  * Resolution surface the service needs: answer a gate-style {@link AccessIntent}

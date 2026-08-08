@@ -13,10 +13,9 @@ import { ToolCallGatePipeline } from "#src/handlers/gates/tool-call-gate-pipelin
 import { PermissionGateHandler } from "#src/handlers/permission-gate-handler";
 import { GateDecisionReporter } from "#src/logging/decision-reporter";
 import type { SessionLogger } from "#src/logging/session-logger";
-import type { ScopedPermissionManager } from "#src/permission-manager";
+import type { ScopedPermissionManager } from "#src/permissions/permission-manager";
 import type { PermissionCheckResult, PermissionState } from "#src/types";
 import { wildcardMatch } from "#src/wildcard-matcher";
-
 import {
   getDecisionEvents,
   makeEvents,

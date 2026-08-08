@@ -6,8 +6,8 @@ import {
   formatUserDeniedReason,
 } from "#src/denial-messages";
 import type { DecisionReporter } from "#src/logging/decision-reporter";
-import { applyPermissionGate } from "#src/permission-gate";
-import type { ScopedPermissionResolver } from "#src/permission-resolver";
+import { applyPermissionGate } from "#src/permissions/permission-gate";
+import type { ScopedPermissionResolver } from "#src/permissions/permission-resolver";
 import type { SessionApprovalRecorder } from "#src/session-approval-recorder";
 import type { PermissionCheckResult } from "#src/types";
 import type { GateDescriptor, GateResult } from "./descriptor";

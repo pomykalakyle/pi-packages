@@ -2,8 +2,8 @@ import type {
   BeforeAgentStartEventResult,
   ExtensionContext,
 } from "@earendil-works/pi-coding-agent";
-import type { PermissionResolver } from "#src/permission-resolver";
-import type { PermissionSession } from "#src/permission-session";
+import type { PermissionResolver } from "#src/permissions/permission-resolver";
+import type { PermissionSession } from "#src/permissions/permission-session";
 import { resolveSkillPromptEntries } from "#src/skill-prompt-sanitizer";
 import { sanitizeAvailableToolsSection } from "#src/system-prompt-sanitizer";
 import { getToolNameFromValue, type ToolRegistry } from "#src/tool-registry";

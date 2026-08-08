@@ -1,4 +1,4 @@
-import { mergeFlatPermissions } from "#src/permission-merge";
+import { mergeFlatPermissions } from "#src/permissions/permission-merge";
 import type { RuleOrigin } from "#src/rule";
 import type { FlatPermissionConfig, ScopeConfig } from "#src/types";
 

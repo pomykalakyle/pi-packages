@@ -5,8 +5,8 @@ import type {
 import {
   formatMissingToolNameReason,
   formatUnknownToolReason,
-} from "#src/permission-prompts";
-import type { PermissionSession } from "#src/permission-session";
+} from "#src/permissions/permission-prompts";
+import type { PermissionSession } from "#src/permissions/permission-session";
 import {
   checkRequestedToolRegistration,
   getToolNameFromValue,

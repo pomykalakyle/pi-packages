@@ -1,41 +1,41 @@
 import { join } from "node:path";
-import type { ResolvedAccessIntent } from "./access-intent/access-intent";
-import { normalizeInput } from "./access-intent/input-normalizer";
-import { PATH_SURFACES } from "./access-intent/path-surfaces";
-import { classifyToolKind } from "./access-intent/tool-kind";
+import type { ResolvedAccessIntent } from "#src/access-intent/access-intent";
+import { normalizeInput } from "#src/access-intent/input-normalizer";
+import { PATH_SURFACES } from "#src/access-intent/path-surfaces";
+import { classifyToolKind } from "#src/access-intent/tool-kind";
 import {
   getGlobalConfigPath,
   getProjectAgentsDir,
   getProjectConfigPath,
-} from "./config/config-paths";
+} from "#src/config/config-paths";
 import {
   FilePolicyLoader,
   type PolicyLoader,
   type PolicyLoaderOptions,
   type ResolvedPolicyPaths,
-} from "./config/policy-loader";
-import { normalizeFlatConfig } from "./normalize";
-import { type PathFlavor, posixPathFlavor } from "./path/path-flavor";
-import type { Rule, RuleOrigin, Ruleset } from "./rule";
+} from "#src/config/policy-loader";
+import { normalizeFlatConfig } from "#src/normalize";
+import { type PathFlavor, posixPathFlavor } from "#src/path/path-flavor";
+import type { Rule, RuleOrigin, Ruleset } from "#src/rule";
 import {
   evaluate,
   evaluateAnyValue,
   evaluateFirst,
   floorAllowsToAsk,
   rewriteAsksToYolo,
-} from "./rule";
-import { mergeScopesWithOrigins } from "./scope-merge";
+} from "#src/rule";
+import { mergeScopesWithOrigins } from "#src/scope-merge";
 import {
   composeRuleset,
   synthesizeBaseline,
   synthesizeDefaults,
-} from "./synthesize";
+} from "#src/synthesize";
 import type {
   FlatPermissionConfig,
   PermissionCheckResult,
   PermissionState,
-} from "./types";
-import { isPermissionState } from "./types";
+} from "#src/types";
+import { isPermissionState } from "#src/types";
 
 const SPECIAL_PERMISSION_KEYS = new Set(["external_directory", "path"]);
 
@@ -427,4 +427,7 @@ function deriveSource(
 }
 
 // Re-export types that external modules import from this file.
-export type { PolicyLoader, ResolvedPolicyPaths } from "./config/policy-loader";
+export type {
+  PolicyLoader,
+  ResolvedPolicyPaths,
+} from "#src/config/policy-loader";

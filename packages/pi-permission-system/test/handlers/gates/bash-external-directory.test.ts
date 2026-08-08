@@ -11,10 +11,9 @@ import { isGateBypass, isGateDescriptor } from "#src/handlers/gates/descriptor";
 import type { ToolCallContext } from "#src/handlers/gates/types";
 import { pathFlavorForPlatform, win32PathFlavor } from "#src/path/path-flavor";
 import { PathNormalizer } from "#src/path-normalizer";
-import type { ScopedPermissionResolver } from "#src/permission-resolver";
+import type { ScopedPermissionResolver } from "#src/permissions/permission-resolver";
 import type { PermissionCheckResult } from "#src/types";
 import { getNonEmptyString, toRecord } from "#src/value-guards";
-
 import { makeResolver } from "#test/helpers/gate-fixtures";
 
 // ── helpers ────────────────────────────────────────────────────────────────

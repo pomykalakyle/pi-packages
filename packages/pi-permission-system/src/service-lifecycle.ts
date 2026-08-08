@@ -1,6 +1,9 @@
 import type { ExtensionContext } from "@earendil-works/pi-coding-agent";
+import {
+  emitReadyEvent,
+  type PermissionEventBus,
+} from "#src/permissions/permission-events";
 import type { RegisteredChildDetector } from "./authority/subagent-detection";
-import { emitReadyEvent, type PermissionEventBus } from "./permission-events";
 import {
   type PermissionsService,
   publishPermissionsService,

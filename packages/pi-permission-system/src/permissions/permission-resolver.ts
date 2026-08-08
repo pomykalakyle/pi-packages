@@ -2,12 +2,12 @@ import type {
   AccessIntent,
   PathValuesAccessIntent,
   ResolvedAccessIntent,
-} from "./access-intent/access-intent";
+} from "#src/access-intent/access-intent";
+import type { Rule } from "#src/rule";
+import type { SessionRules } from "#src/session-rules";
+import type { SkillPermissionChecker } from "#src/skill-prompt-sanitizer";
+import type { PermissionCheckResult, PermissionState } from "#src/types";
 import type { ScopedPermissionManager } from "./permission-manager";
-import type { Rule } from "./rule";
-import type { SessionRules } from "./session-rules";
-import type { SkillPermissionChecker } from "./skill-prompt-sanitizer";
-import type { PermissionCheckResult, PermissionState } from "./types";
 
 /**
  * Answers an {@link AccessIntent} a gate emits, applying the current session

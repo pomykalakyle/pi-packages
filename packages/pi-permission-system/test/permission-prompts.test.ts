@@ -5,7 +5,7 @@ import {
   formatSkillAskPrompt,
   formatSkillPathAskPrompt,
   formatUnknownToolReason,
-} from "#src/permission-prompts";
+} from "#src/permissions/permission-prompts";
 import type { SkillPromptEntry } from "#src/skill-prompt-sanitizer";
 import type { ToolInputFormatterLookup } from "#src/tool-preview/tool-input-formatter-registry";
 import {

@@ -3,14 +3,13 @@ import type { AccessIntent } from "#src/access-intent/access-intent";
 import type { AuthorizerRegistrar } from "#src/authority/authorizer-registry";
 import { posixPathFlavor } from "#src/path/path-flavor";
 import { PathNormalizer } from "#src/path-normalizer";
-import { LocalPermissionsService } from "#src/permissions-service";
+import { LocalPermissionsService } from "#src/permissions/permissions-service";
 import type { ToolAccessExtractorRegistrar } from "#src/tool-access-extractor-registry";
 import type {
   ToolInputFormatter,
   ToolInputFormatterRegistrar,
 } from "#src/tool-preview/tool-input-formatter-registry";
 import type { PermissionCheckResult, PermissionState } from "#src/types";
-
 import { makeCheckResult } from "#test/helpers/handler-fixtures";
 
 // Mock node:fs so realpathSync (the canonical alias) is controllable.

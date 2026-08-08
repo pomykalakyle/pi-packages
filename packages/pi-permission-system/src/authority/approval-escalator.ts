@@ -33,7 +33,7 @@ import {
 } from "#src/authority/permission-forwarding";
 import type { SubagentSessionRegistry } from "#src/authority/subagent-registry";
 import type { DebugReviewLogger } from "#src/logging/session-logger";
-import { buildUiPrompt } from "#src/permission-ui-prompt";
+import { buildUiPrompt } from "#src/permissions/permission-ui-prompt";
 import { toRecord } from "#src/value-guards";
 import type { TerminalAuthorizer } from "./authorizer";
 import type { PromptPermissionDetails } from "./permission-prompter";

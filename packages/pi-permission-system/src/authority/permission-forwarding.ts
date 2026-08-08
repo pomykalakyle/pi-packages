@@ -1,5 +1,5 @@
 import { join } from "node:path";
-import type { PermissionUiPromptSource } from "#src/permission-events";
+import type { PermissionUiPromptSource } from "#src/permissions/permission-events";
 import type { PermissionDecisionState } from "./permission-dialog";
 import type { SubagentSessionRegistry } from "./subagent-registry";
 

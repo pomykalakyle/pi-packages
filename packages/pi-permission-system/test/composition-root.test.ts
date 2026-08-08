@@ -37,7 +37,7 @@ import { getSubagentSessionRegistry } from "#src/authority/subagent-registry";
 import { getGlobalConfigPath } from "#src/config/config-paths";
 import { DEFAULT_EXTENSION_CONFIG } from "#src/config/extension-config";
 import piPermissionSystemExtension from "#src/index";
-import { PERMISSIONS_READY_CHANNEL } from "#src/permission-events";
+import { PERMISSIONS_READY_CHANNEL } from "#src/permissions/permission-events";
 import { getPermissionsService } from "#src/service";
 import { makeFakePi } from "#test/helpers/make-fake-pi";
 

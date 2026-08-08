@@ -6,7 +6,7 @@ import {
   type ShellInvocation,
 } from "#src/access-intent/tool-kind";
 import { suggestSessionPattern } from "#src/pattern-suggest";
-import { formatAskPrompt } from "#src/permission-prompts";
+import { formatAskPrompt } from "#src/permissions/permission-prompts";
 import { SessionApproval } from "#src/session-approval";
 import type { ToolPreviewFormatter } from "#src/tool-preview/tool-preview-formatter";
 import type { PermissionCheckResult } from "#src/types";

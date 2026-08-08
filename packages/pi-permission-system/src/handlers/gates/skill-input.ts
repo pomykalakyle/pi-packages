@@ -1,4 +1,4 @@
-import { formatSkillAskPrompt } from "#src/permission-prompts";
+import { formatSkillAskPrompt } from "#src/permissions/permission-prompts";
 import type { PermissionCheckResult } from "#src/types";
 import type { GateDescriptor } from "./descriptor";
 import { accessFactsFromValue } from "./helpers";

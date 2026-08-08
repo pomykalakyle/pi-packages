@@ -3,7 +3,7 @@ import type { AccessIntent } from "#src/access-intent/access-intent";
 import { AuthorizerRegistry } from "#src/authority/authorizer-registry";
 import { posixPathFlavor } from "#src/path/path-flavor";
 import { PathNormalizer } from "#src/path-normalizer";
-import { LocalPermissionsService } from "#src/permissions-service";
+import { LocalPermissionsService } from "#src/permissions/permissions-service";
 import type { PermissionsService } from "#src/service";
 import {
   getPermissionsService,

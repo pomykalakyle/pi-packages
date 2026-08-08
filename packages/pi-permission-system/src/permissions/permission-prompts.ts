@@ -1,9 +1,9 @@
-import { classifyToolKind, isMcpCheck } from "./access-intent/tool-kind";
-import { matchQualifier } from "./denial-messages";
-import type { SkillPromptEntry } from "./skill-prompt-sanitizer";
-import type { ToolPreviewFormatter } from "./tool-preview/tool-preview-formatter";
-import type { PermissionCheckResult } from "./types";
-import { getNonEmptyString, toRecord } from "./value-guards";
+import { classifyToolKind, isMcpCheck } from "#src/access-intent/tool-kind";
+import { matchQualifier } from "#src/denial-messages";
+import type { SkillPromptEntry } from "#src/skill-prompt-sanitizer";
+import type { ToolPreviewFormatter } from "#src/tool-preview/tool-preview-formatter";
+import type { PermissionCheckResult } from "#src/types";
+import { getNonEmptyString, toRecord } from "#src/value-guards";
 
 // NOTE: formatDenyReason, formatUserDeniedReason, and
 // formatPermissionHardStopHint have been moved to denial-messages.ts.

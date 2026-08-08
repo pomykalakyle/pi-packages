@@ -1,6 +1,6 @@
 import type { AccessPath } from "#src/access-intent/access-path";
 import type { BashProgram } from "#src/access-intent/bash/program";
-import type { ScopedPermissionResolver } from "#src/permission-resolver";
+import type { ScopedPermissionResolver } from "#src/permissions/permission-resolver";
 import { SessionApproval } from "#src/session-approval";
 import { deriveApprovalPattern } from "#src/session-rules";
 import type { PermissionCheckResult } from "#src/types";

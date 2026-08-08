@@ -1,5 +1,5 @@
 import type { PathNormalizer } from "#src/path-normalizer";
-import { formatSkillPathAskPrompt } from "#src/permission-prompts";
+import { formatSkillPathAskPrompt } from "#src/permissions/permission-prompts";
 import type { SkillPromptEntry } from "#src/skill-prompt-sanitizer";
 import { findSkillPathMatch } from "#src/skill-prompt-sanitizer";
 import { toRecord } from "#src/value-guards";

@@ -1,4 +1,4 @@
-import type { ResolvedPolicyPaths } from "#src/permission-manager";
+import type { ResolvedPolicyPaths } from "#src/permissions/permission-manager";
 
 export interface ResolvedConfigLogEntry {
   globalConfigPath: string;

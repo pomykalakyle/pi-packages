@@ -3,7 +3,7 @@ import type {
   WrapperKind,
 } from "#src/access-intent/bash/command-enumeration";
 import { pickMostRestrictive } from "#src/handlers/gates/candidate-check";
-import type { ScopedPermissionResolver } from "#src/permission-resolver";
+import type { ScopedPermissionResolver } from "#src/permissions/permission-resolver";
 import type { PermissionCheckResult } from "#src/types";
 
 /**

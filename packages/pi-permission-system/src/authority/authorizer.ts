@@ -7,7 +7,7 @@ import type {
 import type { SubagentSessionRegistry } from "#src/authority/subagent-registry";
 import type { BashCommandReviewer } from "#src/bash-command-reviewer";
 import type { DebugReviewLogger } from "#src/logging/session-logger";
-import type { PermissionEventBus } from "#src/permission-events";
+import type { PermissionEventBus } from "#src/permissions/permission-events";
 import type { AuthorizerLog, PermissionQuery } from "#src/service";
 import { ParentAuthorizer } from "./approval-escalator";
 import { DenyingAuthorizer } from "./denying-authorizer";

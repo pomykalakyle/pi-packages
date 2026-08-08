@@ -1,6 +1,6 @@
 import type { PromptPermissionDetails } from "#src/authority/permission-prompter";
 import type { DenialContext } from "#src/denial-messages";
-import type { PermissionDecisionEvent } from "#src/permission-events";
+import type { PermissionDecisionEvent } from "#src/permissions/permission-events";
 import type { SessionApproval } from "#src/session-approval";
 import type { PermissionCheckResult, PermissionState } from "#src/types";
 

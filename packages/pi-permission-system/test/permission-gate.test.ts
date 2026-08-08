@@ -3,7 +3,7 @@ import type { PermissionPromptDecision } from "#src/authority/permission-dialog"
 import {
   applyPermissionGate,
   type PermissionGateParams,
-} from "#src/permission-gate";
+} from "#src/permissions/permission-gate";
 
 function makeParams(
   overrides: Partial<PermissionGateParams> = {},

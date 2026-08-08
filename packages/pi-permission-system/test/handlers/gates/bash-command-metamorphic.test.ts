@@ -14,9 +14,8 @@ import { BashProgram } from "#src/access-intent/bash/program";
 import { resolveBashCommandCheck } from "#src/handlers/gates/bash-command";
 import { pathFlavorForPlatform } from "#src/path/path-flavor";
 import { PathNormalizer } from "#src/path-normalizer";
-import type { ScopedPermissionResolver } from "#src/permission-resolver";
+import type { ScopedPermissionResolver } from "#src/permissions/permission-resolver";
 import type { PermissionState } from "#src/types";
-
 import { makeCheckResult } from "#test/helpers/handler-fixtures";
 
 /** Decision strength ordering: deny (2) > ask (1) > allow (0). */

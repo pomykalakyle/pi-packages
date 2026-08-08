@@ -7,7 +7,7 @@ import {
 } from "#src/access-intent/tool-kind";
 import type { ShellToolsConfig } from "#src/config/config-schema";
 import type { PathNormalizer } from "#src/path-normalizer";
-import type { ScopedPermissionResolver } from "#src/permission-resolver";
+import type { ScopedPermissionResolver } from "#src/permissions/permission-resolver";
 import type { SkillPromptEntry } from "#src/skill-prompt-sanitizer";
 import type { ToolAccessExtractorLookup } from "#src/tool-access-extractor-registry";
 import type { ToolInputFormatterLookup } from "#src/tool-preview/tool-input-formatter-registry";

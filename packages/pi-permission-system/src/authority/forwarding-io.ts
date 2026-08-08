@@ -23,7 +23,7 @@ import {
   OWNER_ONLY_FILE_MODE,
 } from "#src/logging/log-file-permissions";
 import type { DebugReviewLogger } from "#src/logging/session-logger";
-import type { PermissionUiPromptSource } from "#src/permission-events";
+import type { PermissionUiPromptSource } from "#src/permissions/permission-events";
 
 /** Valid `permissions:ui_prompt` source values, for tolerant request reads. */
 const UI_PROMPT_SOURCES = [

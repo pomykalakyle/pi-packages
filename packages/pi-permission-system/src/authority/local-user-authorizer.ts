@@ -16,8 +16,8 @@ import { buildForwardedScopeLabels } from "#src/pattern-suggest";
 import {
   emitUiPromptEvent,
   type PermissionEventBus,
-} from "#src/permission-events";
-import { buildUiPrompt } from "#src/permission-ui-prompt";
+} from "#src/permissions/permission-events";
+import { buildUiPrompt } from "#src/permissions/permission-ui-prompt";
 import type { TerminalAuthorizer } from "./authorizer";
 import type { PromptPermissionDetails } from "./permission-prompter";
 

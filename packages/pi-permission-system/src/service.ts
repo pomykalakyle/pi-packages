@@ -36,19 +36,19 @@ export interface AuthorizerLog {
   review(event: string, details?: Record<string, unknown>): void;
   debug(event: string, details?: Record<string, unknown>): void;
 }
-export type { PromptPermissionDetails } from "./authority/permission-prompter";
 export type {
   ForwardedPromptContext,
   PermissionDecisionEvent,
   PermissionsReadyEvent,
   PermissionUiPromptEvent,
   PermissionUiPromptSource,
-} from "./permission-events";
+} from "#src/permissions/permission-events";
 export {
   PERMISSIONS_DECISION_CHANNEL,
   PERMISSIONS_READY_CHANNEL,
   PERMISSIONS_UI_PROMPT_CHANNEL,
-} from "./permission-events";
+} from "#src/permissions/permission-events";
+export type { PromptPermissionDetails } from "./authority/permission-prompter";
 export type { PermissionCheckResult, PermissionState, ToolInputFormatter };
 
 /** Process-global key for the service slot. */

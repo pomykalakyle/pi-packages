@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { buildUiPrompt } from "#src/permission-ui-prompt";
+import { buildUiPrompt } from "#src/permissions/permission-ui-prompt";
 
 describe("buildUiPrompt", () => {
   it("normalizes a skill prompt to the skill surface and skill-name value", () => {

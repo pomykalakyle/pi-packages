@@ -1,25 +1,24 @@
 import type { ExtensionContext } from "@earendil-works/pi-coding-agent";
-import type { ForwardingController } from "#src/authority/forwarding-manager";
 import {
   getActiveAgentName,
   getActiveAgentNameFromSystemPrompt,
-} from "./active-agent";
-import type { AuthorizerSelectionLifecycle } from "./authority/authorizer-selection";
-import type { ShellToolsConfig } from "./config/config-schema";
-import type { SessionConfigStore } from "./config/config-store";
-import type { PermissionSystemExtensionConfig } from "./config/extension-config";
-import type { ExtensionPaths } from "./extension-paths";
-import type { ToolCallGateInputs } from "./handlers/gates/tool-call-gate-pipeline";
-import type { PathFlavor } from "./path/path-flavor";
-import { PathNormalizer } from "./path-normalizer";
-import type { ScopedPermissionManager } from "./permission-manager";
-
-import type { SessionRules } from "./session-rules";
-import type { SkillPromptEntry } from "./skill-prompt-sanitizer";
+} from "#src/active-agent";
+import type { AuthorizerSelectionLifecycle } from "#src/authority/authorizer-selection";
+import type { ForwardingController } from "#src/authority/forwarding-manager";
+import type { ShellToolsConfig } from "#src/config/config-schema";
+import type { SessionConfigStore } from "#src/config/config-store";
+import type { PermissionSystemExtensionConfig } from "#src/config/extension-config";
+import type { ExtensionPaths } from "#src/extension-paths";
+import type { ToolCallGateInputs } from "#src/handlers/gates/tool-call-gate-pipeline";
+import type { PathFlavor } from "#src/path/path-flavor";
+import { PathNormalizer } from "#src/path-normalizer";
+import type { SessionRules } from "#src/session-rules";
+import type { SkillPromptEntry } from "#src/skill-prompt-sanitizer";
 import {
   resolveToolPreviewLimits,
   type ToolPreviewFormatterOptions,
-} from "./tool-preview/tool-preview-formatter";
+} from "#src/tool-preview/tool-preview-formatter";
+import type { ScopedPermissionManager } from "./permission-manager";
 
 /**
  * Encapsulates all mutable session state and exposes operations instead of

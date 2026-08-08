@@ -189,7 +189,7 @@ export default tseslint.config(
   // import. See docs/decisions/0002-path-values-string-boundary.md.
   // ---------------------------------------------------------------------------
   {
-    files: ["packages/pi-permission-system/src/permission-manager.ts"],
+    files: ["packages/pi-permission-system/src/permissions/permission-manager.ts"],
     rules: {
       "no-restricted-imports": [
         "error",

@@ -13,12 +13,11 @@ import type { ToolCallContext } from "#src/handlers/gates/types";
 import type { DecisionReporter } from "#src/logging/decision-reporter";
 import { pathFlavorForPlatform } from "#src/path/path-flavor";
 import { PathNormalizer } from "#src/path-normalizer";
-import type { ScopedPermissionResolver } from "#src/permission-resolver";
+import type { ScopedPermissionResolver } from "#src/permissions/permission-resolver";
 import type { SessionApprovalRecorder } from "#src/session-approval-recorder";
 import type { SkillPromptEntry } from "#src/skill-prompt-sanitizer";
 import type { ToolPreviewFormatterOptions } from "#src/tool-preview/tool-preview-formatter";
 import type { PermissionCheckResult } from "#src/types";
-
 import { makeCheckResult } from "#test/helpers/handler-fixtures";
 
 /**

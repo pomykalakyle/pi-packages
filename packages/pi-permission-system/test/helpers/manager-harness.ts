@@ -13,7 +13,10 @@ import {
   getProjectConfigPath,
 } from "#src/config/config-paths";
 import type { ResolvedPolicyPaths } from "#src/config/policy-loader";
-import { PermissionManager, type PolicyLoader } from "#src/permission-manager";
+import {
+  PermissionManager,
+  type PolicyLoader,
+} from "#src/permissions/permission-manager";
 import type { Rule } from "#src/rule";
 import type { PermissionState, ScopeConfig } from "#src/types";
 

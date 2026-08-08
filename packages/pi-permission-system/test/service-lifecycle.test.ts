@@ -19,7 +19,7 @@ vi.mock("#src/service", () => ({
   publishPermissionsService: mockPublishPermissionsService,
   unpublishPermissionsService: mockUnpublishPermissionsService,
 }));
-vi.mock("#src/permission-events", () => ({
+vi.mock("../src/permissions/permission-events", () => ({
   emitReadyEvent: mockEmitReadyEvent,
 }));
 

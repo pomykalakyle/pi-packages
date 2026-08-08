@@ -1,5 +1,5 @@
 import type { AccessPath } from "#src/access-intent/access-path";
-import type { ScopedPermissionResolver } from "#src/permission-resolver";
+import type { ScopedPermissionResolver } from "#src/permissions/permission-resolver";
 import type { PermissionCheckResult } from "#src/types";
 import { pickMostRestrictive } from "./candidate-check";
 
